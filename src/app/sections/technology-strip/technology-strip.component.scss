@@ -1,0 +1,11 @@
+:host { display: block; }
+.technology-strip { position: relative; overflow: hidden; padding: 1.5rem 0; border-top: 1px solid #ffffff12; border-bottom: 1px solid #ffffff12; background: #0c0e14; }
+.technology-content, .technology-list { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.technology-content > p { margin: 0; color: #9da2b1; font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.technology-list { flex-wrap: wrap; justify-content: flex-end; color: #e4e6ed; font-size: .9rem; font-weight: 700; }
+.technology-list span { transition: color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-premium); }
+.technology-list span:hover { color: #ff9a68; transform: translateY(-2px); }
+@media (max-width: 640px) {
+  .technology-content { align-items: flex-start; flex-direction: column; gap: .75rem; }
+  .technology-list { justify-content: flex-start; gap: .5rem 1rem; }
+}

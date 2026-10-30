@@ -1,0 +1,6 @@
+<canvas #canvas class="hero-scene__canvas" aria-hidden="true"></canvas>
+@if (unavailable() && fallbackImage) {
+  <img class="hero-scene__fallback" [src]="fallbackImage" alt="KernBuild workspace illustration">
+} @else if (unavailable()) {
+  <div class="hero-scene__message" role="status">Interactive preview unavailable</div>
+}

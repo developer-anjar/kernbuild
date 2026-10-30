@@ -1,0 +1,6 @@
+:host { display: block; }
+.feedback-container { max-width: 860px; }
+.recommendation { margin: 0; padding: 0; border: 0; }
+.recommendation label { display: inline-flex; align-items: center; gap: .4rem; margin: .55rem 1rem 0 0; color: var(--color-secondary-text); }
+.recommendation input { accent-color: var(--color-primary); }
+.checkbox-field a { color: var(--color-primary); text-decoration: underline; }

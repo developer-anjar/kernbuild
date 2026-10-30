@@ -1,0 +1,10 @@
+<article class="service-card" [class]="'service-card--' + service().colorClass">
+  <div class="service-card__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path [attr.d]="service().icon"/>
+    </svg>
+  </div>
+  <h3 class="service-card__title">{{ service().title }}</h3>
+  <p class="service-card__desc">{{ service().description }}</p>
+  <a class="service-card__link" routerLink="/" fragment="contact">Learn More <span aria-hidden="true">→</span></a>
+</article>

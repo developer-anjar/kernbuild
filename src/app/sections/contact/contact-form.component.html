@@ -1,0 +1,50 @@
+<form class="form-card" #contactForm="ngForm" (ngSubmit)="submit(contactForm)" novalidate>
+  <div class="form-grid">
+    <div class="form-field">
+      <label for="contact-name">Full name <span aria-hidden="true">*</span></label>
+      <input id="contact-name" name="name" [(ngModel)]="inquiry.name" #name="ngModel" required autocomplete="name" [attr.aria-invalid]="name.invalid && name.touched" [attr.aria-describedby]="name.invalid && name.touched ? 'contact-name-error' : null">
+      @if (name.invalid && name.touched) {
+        <span class="field-error" id="contact-name-error">Enter your name.</span>
+      }
+    </div>
+    <div class="form-field">
+      <label for="contact-email">Email address <span aria-hidden="true">*</span></label>
+      <input id="contact-email" name="email" type="email" [(ngModel)]="inquiry.email" #email="ngModel" required email autocomplete="email" [attr.aria-invalid]="email.invalid && email.touched" [attr.aria-describedby]="email.invalid && email.touched ? 'contact-email-error' : null">
+      @if (email.invalid && email.touched) {
+        <span class="field-error" id="contact-email-error">Enter a valid email address.</span>
+      }
+    </div>
+    <div class="form-field">
+      <label for="contact-subject">Subject <span aria-hidden="true">*</span></label>
+      <input id="contact-subject" name="subject" [(ngModel)]="inquiry.subject" #subject="ngModel" required maxlength="160" [attr.aria-invalid]="subject.invalid && subject.touched" [attr.aria-describedby]="subject.invalid && subject.touched ? 'contact-subject-error' : null">
+      @if (subject.invalid && subject.touched) {
+        <span class="field-error" id="contact-subject-error">Enter a subject.</span>
+      }
+    </div>
+    <div class="form-field form-field--full">
+      <label for="contact-message">Message <span aria-hidden="true">*</span></label>
+      <textarea id="contact-message" name="message" [(ngModel)]="inquiry.message" #message="ngModel" required minlength="20" rows="5" [attr.aria-invalid]="message.invalid && message.touched" [attr.aria-describedby]="message.invalid && message.touched ? 'contact-message-error' : null"></textarea>
+      @if (message.invalid && message.touched) {
+        <span class="field-error" id="contact-message-error">Please share at least 20 characters in your message.</span>
+      }
+    </div>
+    <div class="form-field form-field--full">
+      <label class="checkbox-field" for="contact-consent">
+        <input id="contact-consent" name="privacyConsent" type="checkbox" [(ngModel)]="inquiry.privacyConsent" required>
+        <span>I agree that KernBuild may use these details to respond to my inquiry. <a routerLink="/privacy">Privacy Policy</a></span>
+      </label>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button class="button" type="submit" [disabled]="contactService.submitting()">
+      @if (contactService.submitting()) { Sending… } @else { Send project inquiry <span aria-hidden="true">→</span> }
+    </button>
+    <span class="field-error" aria-live="polite">Fields marked * are required.</span>
+  </div>
+  @if (contactService.submitted()) {
+    <p class="form-status form-status--success" role="status">Thanks for reaching out. Your message has been sent.</p>
+  }
+  @if (contactService.error()) {
+    <p class="form-status form-status--error" role="alert">{{ contactService.error() }}</p>
+  }
+</form>

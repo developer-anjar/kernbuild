@@ -1,0 +1,10 @@
+<section class="technology-strip" aria-label="Technologies">
+  <div class="container technology-content">
+    <p>Tools we work with</p>
+    <div class="technology-list">
+      @for (technology of technologies; track technology.name) {
+        <span>{{ technology.name }}</span>
+      }
+    </div>
+  </div>
+</section>

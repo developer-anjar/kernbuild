@@ -1,0 +1,27 @@
+<section class="section section--blue">
+  <div class="container">
+    <header class="page-heading">
+      <p class="eyebrow">Selected work</p>
+      <h1>Projects built with purpose</h1>
+      <p>A selection of product concepts and platforms. Preview images are placeholders until final project screenshots are available.</p>
+    </header>
+    <div class="project-filters" role="search">
+      <label class="sr-only" for="project-search">Search projects</label>
+      <input id="project-search" type="search" placeholder="Search projects or technologies" (input)="setSearch($event)">
+      <label class="sr-only" for="project-category">Filter by category</label>
+      <select id="project-category" [value]="projectService.category()" (change)="setCategory($event)">
+        <option value="All">All categories</option>
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+    </div>
+    <div class="projects-grid">
+      @for (project of projectService.projects(); track project.id) {
+        <app-project-card [project]="project" />
+      } @empty {
+        <p class="empty-state" role="status">No projects match that search. Try another term or category.</p>
+      }
+    </div>
+  </div>
+</section>

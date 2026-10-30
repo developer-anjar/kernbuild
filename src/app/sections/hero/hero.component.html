@@ -1,0 +1,24 @@
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Software that moves your business forward</p>
+      <h1>Build from the <span>core.</span></h1>
+      <p class="hero-description">We turn your ideas into thoughtful digital products—from custom web applications and dashboards to AI-powered tools.</p>
+      <div class="hero-actions">
+        <a class="button" routerLink="/" fragment="contact">Let's build something <span aria-hidden="true">→</span></a>
+        <a class="button button--outline" routerLink="/" fragment="projects">Explore our work</a>
+      </div>
+      <div class="hero-points" aria-label="KernBuild capabilities">
+        <span><i aria-hidden="true"></i> Product-minded development</span>
+        <span><i aria-hidden="true"></i> From frontend to deployment</span>
+      </div>
+    </div>
+    <div class="hero-visual" aria-label="Workspace illustration">
+      <app-hero-scene [fallbackImage]="config.images.hero" />
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-art__badge hero-art__badge--one">Ideas, engineered</div>
+        <div class="hero-art__badge hero-art__badge--two"><b></b> Built to scale</div>
+      </div>
+    </div>
+  </div>
+</section>
