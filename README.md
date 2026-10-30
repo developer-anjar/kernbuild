@@ -1,61 +1,51 @@
 # KernBuild
 
-KernBuild is an Angular 20 website for a software development studio. The site includes a responsive homepage, searchable project listing, contact and feedback forms, and privacy and terms pages.
+KernBuild is a React 19 website built with Vite and TypeScript for a software development studio. It includes a responsive homepage, searchable project listing, contact and feedback forms, privacy and terms pages, scroll and route animations, and a lazy-loaded Three.js hero visual.
 
-## Source layout
+## Requirements
 
-```text
-src/app/
-  core/       App-wide navbar, configuration, and API services
-  pages/      Routed page compositions (home, projects, contact, legal)
-  sections/   Independent homepage sections and their templates/styles
-  shared/     Reusable footer, cards, and back-to-top control
-  data/       Static content for services, projects, process, and tools
-  models/     Shared TypeScript data contracts
-  app.ts      Root layout
-  app.routes.ts
-```
-
-`pages/home/home.component.html` only composes section selectors. Each homepage section lives in its own folder under `sections/`.
+- Node.js 20.19+ or 22.12+
+- npm
 
 ## Development
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
-Open `http://localhost:4200/`. The Angular development server reloads when source files change.
+Open the local URL printed by Vite (normally `http://localhost:5173/`). `npm start` is also available as an alias.
 
-## Build and tests
+## Production
 
 ```bash
 npm run build
-npx ng test --watch=false --browsers=ChromeHeadless
+npm run preview
 ```
 
-## Contact email configuration
+The production files are written to `dist/`.
 
-The contact form sends through EmailJS when all three settings are configured in `src/environments/environment.ts` and `environment.prod.ts`:
+## Project structure
 
-```ts
-emailJs: {
-  publicKey: 'YOUR_EMAILJS_PUBLIC_KEY',
-  serviceId: 'YOUR_EMAILJS_SERVICE_ID',
-  templateId: 'YOUR_EMAILJS_TEMPLATE_ID',
-}
-```
+- `src/main.tsx` boots React and React Router.
+- `src/react/App.tsx` composes the persistent site shell.
+- `src/react/routes/AppRoutes.tsx` defines application routes and page titles.
+- `src/react/pages/` contains the home, projects, contact, feedback, and legal pages.
+- `src/react/components/` contains navigation, forms, cards, motion utilities, and scene components.
+- `src/react/data/`, `src/react/types/`, and `src/react/config/` hold display data, TypeScript contracts, and configurable site/API settings.
+- `src/react/services/` contains contact and feedback submission logic.
+- `src/react/hooks/` contains scroll and motion hooks.
+- `src/react/styles/` contains global, responsive, motion, and component SCSS.
+- `public/` contains static images and icons.
 
-Configure the recipient and template inside the EmailJS dashboard. The template must accept `from_name`, `reply_to`, `subject`, and `message`. Use the EmailJS allowed-origins setting for the deployed domain. The public key is intended for browser use; never put a private key or other secret in frontend environment files. The footer email link is controlled separately by `businessEmail`.
+`BackgroundScene` is the persistent visual layer behind every route. It retains the fixed parallax image and mounts `HeroScene`, the lazy-loaded Three.js r149 renderer; the canvas is pointer-transparent so navigation and page controls remain interactive. This is an original KernBuild scene, not the ThreeUI Temple Night source.
 
-If EmailJS is not configured, the contact form can use `POST {apiBaseUrl}/contact` when a compatible API is available and `backendAvailable` is `true`. A successful API response must contain `{ "accepted": true }`; other responses are treated as failures. Feedback uses `POST {apiBaseUrl}/feedback`. Set `apiBaseUrl` and `backendAvailable` in the relevant environment file only after the backend is deployed. When no provider is available, the contact form reports that the message was not sent.
+## Contact and feedback configuration
 
-## Images and business data
+Edit `src/react/config/environment.ts` to configure the backend base URL, backend availability, EmailJS public configuration, business email, and social links. Do not put private credentials in client-side configuration.
 
-Replace the configurable image paths in `src/app/core/config/site.config.ts` with the supplied hero, about, and project images. Local SVG illustrations are currently used as placeholders so missing screenshots do not produce broken images. Project URLs are intentionally omitted until verified. Statistics are marked as illustrative placeholders in the configuration and on the page; replace them with confirmed figures before making business claims.
+The contact form can send using EmailJS when its public key, service ID, and template ID are configured, or use `POST {apiBaseUrl}/contact` when a compatible backend is enabled. Feedback uses `POST {apiBaseUrl}/feedback`. If neither submission route is configured or a request fails, the interface reports that the message was not sent.
 
-## Interactive hero scene
+Image paths and site content are configured in `src/react/config/site.ts` and `src/react/data/`. The project and statistics data should be verified before publishing business claims; placeholder statistics are explicitly marked.
 
-The hero includes an original Three.js scene wrapped in a standalone Angular component at `src/app/shared/hero-scene/`. It uses Three.js r149 directly (not the older `@angular-three/core` renderer, whose peer requirements do not support this Angular 20 project). The renderer is lazy-loaded, pauses when the hero is offscreen or the document is hidden, respects reduced-motion preferences, and falls back to the configured hero image if WebGL initialization fails.
-
-Privacy and terms pages are starter copy and require review against the deployed business, data handling, and applicable law before publication.
+Privacy and terms pages are starter copy and should be reviewed against the deployed business, data handling, and applicable law before publication.

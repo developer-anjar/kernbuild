@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { SITE_CONFIG } from '../../app/core/config/site.config';
-import { environment } from '../../environments/environment';
+import { SITE_CONFIG } from '../config/site';
+import { environment } from '../config/environment';
 import { scrollToSection, scrollToTop } from '../services/smoothScroll';
 
 const NAV_LINKS = [

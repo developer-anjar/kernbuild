@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState, type PropsWithChildren } from 'react';
-import { PROJECTS_DATA } from '../../app/data/projects.data';
-import { PROJECT_CATEGORIES, type Project, type ProjectCategory } from '../../app/models/project.model';
+import { PROJECTS_DATA } from '../data/projects';
+import { PROJECT_CATEGORIES, type Project, type ProjectCategory } from '../types/project';
 
 interface ProjectsContextValue {
   projects: Project[];

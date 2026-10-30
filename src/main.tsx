@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './react/App';
-import './react/styles.scss';
+import './react/styles/index.scss';
 import 'lenis/dist/lenis.css';
 
 const root = document.getElementById('root');

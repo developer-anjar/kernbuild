@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { HeroScene } from './HeroScene';
 
 /** Persistent particle-wave artwork behind every route and section. */
 export function BackgroundScene() {
@@ -36,6 +37,7 @@ export function BackgroundScene() {
   return (
     <div ref={layerRef} className="background-scene" aria-hidden="true">
       <img ref={imageRef} className="background-scene__image" src="/images/hero/image.png" alt="" fetchPriority="high" />
+      <HeroScene fallbackImage="/images/hero/image.png" />
       <span className="background-scene__atmosphere" />
     </div>
   );

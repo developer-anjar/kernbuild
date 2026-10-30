@@ -1,0 +1,6 @@
+.final-cta { position: relative; isolation: isolate; overflow: hidden; padding: clamp(4rem, 8vw, 7rem) 0; background: radial-gradient(ellipse at 50% 120%, #ff5a0a2b, transparent 52%), linear-gradient(145deg, #080a10, #15111a 62%, #10152d); text-align: center; }
+.final-cta::before { position: absolute; z-index: -1; top: -9rem; left: 50%; width: min(60vw, 38rem); aspect-ratio: 1; border: 1px solid #ff8a0024; border-radius: 50%; box-shadow: 0 0 0 48px #ff8a0008, 0 0 0 96px #ff8a0005; content: ''; transform: translateX(-50%); }
+.final-cta__inner { max-width: 720px; }
+.final-cta h2 { margin: 0; color: #fff; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.04em; }
+.final-cta p:not(.eyebrow) { margin: .8rem auto 1.5rem; color: #b7bac6; }
+.final-cta .eyebrow { color: #ff9a68; }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import type { Project } from '../../app/models/project.model';
-import type { ServiceItem } from '../../app/models/service.model';
+import type { Project } from '../types/project';
+import type { ServiceItem } from '../types/service';
 
 export function ProjectCard({ project }: { project: Project }) {
   return (

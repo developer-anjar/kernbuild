@@ -1,5 +1,5 @@
-import { environment } from '../../environments/environment';
-import type { Feedback } from '../../app/models/feedback.model';
+import { environment } from '../config/environment';
+import type { Feedback } from '../types/feedback';
 
 export async function submitFeedback(feedback: Feedback): Promise<void> {
   if (!environment.backendAvailable) throw new Error('Feedback API is not configured.');

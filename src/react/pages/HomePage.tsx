@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { SITE_CONFIG, STATISTICS_DATA } from '../../app/core/config/site.config';
-import { PROCESS_DATA } from '../../app/data/process.data';
-import { SERVICES_DATA } from '../../app/data/services.data';
-import { TECHNOLOGIES_DATA } from '../../app/data/technologies.data';
-import { WHY_CHOOSE_DATA } from '../../app/data/why-choose.data';
-import type { StatisticMetric } from '../../app/models/statistics.model';
+import { SITE_CONFIG, STATISTICS_DATA } from '../config/site';
+import { PROCESS_DATA } from '../data/process';
+import { SERVICES_DATA } from '../data/services';
+import { TECHNOLOGIES_DATA } from '../data/technologies';
+import { WHY_CHOOSE_DATA } from '../data/why-choose';
+import type { StatisticMetric } from '../types/statistics';
 import { useProjects } from '../contexts/ProjectsContext';
 import { useHomeMotion } from '../hooks/useHomeMotion';
 import { ContactForm, FeedbackForm } from '../components/Forms';
@@ -272,11 +272,12 @@ export function ContactSection() {
   );
 }
 
-export function FeedbackSection() {
+export function FeedbackSection({ standalonePage = false }: { standalonePage?: boolean }) {
+  const Heading = standalonePage ? 'h1' : 'h2';
   return (
     <section className="section section--muted" id="feedback">
       <div className="container feedback-container">
-        <header className="section-heading"><p className="eyebrow">Your voice matters</p><h2>Share your experience</h2><p>Worked with KernBuild? Your honest feedback helps us improve how we collaborate and build.</p></header>
+        <header className={standalonePage ? 'page-heading' : 'section-heading'}><p className="eyebrow">Your voice matters</p><Heading>Share your experience</Heading><p>Worked with KernBuild? Your honest feedback helps us improve how we collaborate and build.</p></header>
         <FeedbackForm />
       </div>
     </section>

@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import type { ContactInquiry } from '../../app/models/contact.model';
-import type { Feedback } from '../../app/models/feedback.model';
-import { environment } from '../../environments/environment';
+import type { ContactInquiry } from '../types/contact';
+import type { Feedback } from '../types/feedback';
+import { environment } from '../config/environment';
 import { submitContact } from '../services/contactService';
 import { submitFeedback } from '../services/feedbackService';
 

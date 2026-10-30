@@ -1,5 +1,5 @@
-import { environment } from '../../environments/environment';
-import type { ContactInquiry } from '../../app/models/contact.model';
+import { environment } from '../config/environment';
+import type { ContactInquiry } from '../types/contact';
 
 export async function submitContact(inquiry: ContactInquiry): Promise<void> {
   const { publicKey, serviceId, templateId } = environment.emailJs;

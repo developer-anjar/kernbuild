@@ -86,4 +86,4 @@ export function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
   );
 }
 
-export function FeedbackPage() { return <FeedbackSection />; }
+export function FeedbackPage() { return <FeedbackSection standalonePage />; }

@@ -170,8 +170,8 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
           intersectionObserver = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; updateRendering(); });
           intersectionObserver.observe(canvas);
         }
-        host.addEventListener('pointermove', onPointerMove);
-        host.addEventListener('pointerleave', onPointerLeave);
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        window.addEventListener('pointerleave', onPointerLeave, { passive: true });
         document.addEventListener('visibilitychange', onVisibilityChange);
         window.addEventListener('resize', resize);
         window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', onMotionChange);
@@ -190,8 +190,8 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
       stopRendering();
       observer?.disconnect();
       intersectionObserver?.disconnect();
-      host.removeEventListener('pointermove', onPointerMove);
-      host.removeEventListener('pointerleave', onPointerLeave);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('resize', resize);
       window.matchMedia('(prefers-reduced-motion: reduce)').removeEventListener('change', onMotionChange);

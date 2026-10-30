@@ -1,0 +1,12 @@
+.process-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.process-card { position: relative; padding: 1.6rem; border: 1px solid var(--color-border); border-radius: 1rem; background: linear-gradient(145deg, #fff, #fbfbfd); box-shadow: 0 10px 28px #10152d08; }
+.process-number { position: absolute; top: 1.25rem; right: 1.25rem; color: #c8cbd5; font-size: 1rem; font-weight: 800; }
+.process-icon { display: grid; width: 46px; height: 46px; place-items: center; border-radius: .8rem; background: var(--color-lavender); color: var(--color-purple); }
+.process-icon svg { width: 23px; height: 23px; }
+.process-card h3 { margin: 1rem 0 .35rem; font-size: 1.05rem; }
+.process-card p { margin: 0; color: var(--color-secondary-text); font-size: .88rem; }
+.process-card:hover .process-icon { background: #ff5a0a12; color: var(--color-primary); }
+.process-icon { transition: color var(--motion-base) ease, background var(--motion-base) ease, transform var(--motion-base) var(--ease-premium); }
+.process-card:hover .process-icon { transform: translateY(-2px) rotate(-4deg); }
+@media (max-width: 900px) { .process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .process-grid { grid-template-columns: 1fr; } }
