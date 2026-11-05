@@ -1,6 +1,8 @@
 # KernBuild website
 
-KernBuild is a static React 19 and Vite website built with TypeScript. Page content, projects, statistics, and testimonials are bundled with the frontend; there is no custom backend or database connection.
+KernBuild is a digital solutions and software development studio transforming ideas into impactful digital products. We specialize in full-stack development, web applications, UI/UX design, AI integration, and custom business solutions. We combine creativity, technology, and innovation to help businesses grow.
+
+This static React 19 and Vite website is built with TypeScript. Page content, projects, statistics, and testimonials are bundled with the frontend; there is no custom backend or database connection.
 
 ## Local development
 
