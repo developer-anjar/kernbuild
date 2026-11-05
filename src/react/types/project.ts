@@ -1,21 +1,41 @@
+export type ProjectCategory =
+  | 'Web Applications'
+  | 'E-commerce'
+  | 'Management Systems'
+  | 'AI Applications'
+  | 'Portfolio'
+  | 'SaaS'
+  | 'Landing Pages'
+  | 'Dashboards';
+
+export type ProjectStatus = 'Completed' | 'In Progress' | 'Concept';
+
 export interface Project {
   id: string;
+  slug: string;
   title: string;
   category: ProjectCategory;
-  description: string;
-  imagePath: string;
+  shortDescription: string;
+  fullDescription: string;
+  thumbnail: string;
+  gallery: string[];
   technologies: string[];
+  features: string[];
   liveUrl?: string;
-  sourceUrl?: string;
+  githubUrl?: string;
+  completionDate: string;
+  status: ProjectStatus;
   featured: boolean;
+  dummy: boolean;
 }
-
-export type ProjectCategory = 'Web Applications' | 'Management Systems' | 'AI Tools' | 'Dashboards' | 'Landing Pages';
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
   'Web Applications',
+  'E-commerce',
   'Management Systems',
-  'AI Tools',
-  'Dashboards',
+  'AI Applications',
+  'Portfolio',
+  'SaaS',
   'Landing Pages',
+  'Dashboards',
 ];

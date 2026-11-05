@@ -3,7 +3,7 @@ import { ProjectCard } from '../components/Cards';
 import { ContactSection, FeedbackSection } from './HomePage';
 
 export function ProjectsPage() {
-  const { categories, category, search, projects, setCategory, setSearch } = useProjects();
+  const { categories, category, search, projects, loading, error, setCategory, setSearch, refresh } = useProjects();
   return (
     <section className="section section--blue">
       <div className="container">
@@ -21,9 +21,11 @@ export function ProjectsPage() {
             {categories.map(item => <option value={item} key={item}>{item}</option>)}
           </select>
         </div>
-        <div className="projects-grid">
+        {loading ? <p className="empty-state" role="status">Loading projects...</p> : error ? (
+          <div className="empty-state" role="alert">{error} <button className="text-link" type="button" onClick={() => void refresh()}>Try again</button></div>
+        ) : <div className="projects-grid">
           {projects.length ? projects.map(project => <ProjectCard project={project} key={project.id} />) : <p className="empty-state" role="status">No projects match that search. Try another term or category.</p>}
-        </div>
+        </div>}
       </div>
     </section>
   );

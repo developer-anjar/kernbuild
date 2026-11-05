@@ -34,9 +34,12 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
     if (!canvas || !host) return;
 
     let destroyed = false;
-    let visible = true;
-    let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let visible = false;
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reducedMotion = motionPreference.matches;
     let animationFrame = 0;
+    let lastRenderedAt = 0;
+    let initializationStarted = false;
     let three: typeof import('three') | undefined;
     let renderer: THREE.WebGLRenderer | undefined;
     let scene: THREE.Scene | undefined;
@@ -44,8 +47,12 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
     let clock: THREE.Clock | undefined;
     let observer: ResizeObserver | undefined;
     let intersectionObserver: IntersectionObserver | undefined;
+    let routeObserver: MutationObserver | undefined;
+    let observedHero: Element | null = null;
     let pointerX = 0;
     let pointerY = 0;
+    let hostBounds: { left: number; top: number; width: number; height: number } | null = null;
+    const frameInterval = 1000 / 30;
 
     const renderOnce = () => {
       if (renderer && scene && camera) renderer.render(scene, camera);
@@ -54,10 +61,15 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
       if (animationFrame) cancelAnimationFrame(animationFrame);
       animationFrame = 0;
     };
-    const animate = () => {
+    const animate = (now: number) => {
       animationFrame = 0;
       const globe = globeRef.current;
       if (!renderer || !scene || !camera || !globe || !visible || document.hidden) return;
+      if (now - lastRenderedAt < frameInterval) {
+        animationFrame = requestAnimationFrame(animate);
+        return;
+      }
+      lastRenderedAt = now;
       const elapsed = clock?.getElapsedTime() ?? 0;
       globe.position.y = -0.14 + Math.sin(elapsed * 0.42) * 0.035;
       globe.rotation.y += (-0.46 + elapsed * 0.075 + pointerX * 0.16 - globe.rotation.y) * 0.025;
@@ -74,6 +86,12 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
       if (!renderer || !camera) return;
       const bounds = canvas.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
+      hostBounds = {
+        left: bounds.left + window.scrollX,
+        top: bounds.top + window.scrollY,
+        width: bounds.width,
+        height: bounds.height,
+      };
       const halfHeight = 3.2;
       const halfWidth = halfHeight * bounds.width / bounds.height;
       camera.left = -halfWidth;
@@ -85,15 +103,27 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
       renderOnce();
     };
     const onPointerMove = (event: PointerEvent) => {
-      if (reducedMotion) return;
-      const bounds = host.getBoundingClientRect();
-      if (!bounds.width || !bounds.height) return;
-      pointerX = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
-      pointerY = ((event.clientY - bounds.top) / bounds.height) * 2 - 1;
+      if (reducedMotion || !visible || !hostBounds) return;
+      const left = hostBounds.left - window.scrollX;
+      const top = hostBounds.top - window.scrollY;
+      pointerX = ((event.clientX - left) / hostBounds.width) * 2 - 1;
+      pointerY = ((event.clientY - top) / hostBounds.height) * 2 - 1;
     };
     const onPointerLeave = () => { pointerX = 0; pointerY = 0; };
     const onVisibilityChange = () => updateRendering();
-    const onMotionChange = (event: MediaQueryListEvent) => { reducedMotion = event.matches; updateRendering(); };
+    let startInitialization = () => {};
+    const onMotionChange = (event: MediaQueryListEvent) => {
+      reducedMotion = event.matches;
+      if (reducedMotion) {
+        setUnavailable(Boolean(observedHero));
+        updateRendering();
+      } else if (renderer) {
+        setUnavailable(false);
+        updateRendering();
+      } else {
+        startInitialization();
+      }
+    };
 
     const initialize = async () => {
       try {
@@ -168,13 +198,14 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
         if ('ResizeObserver' in window) { observer = new ResizeObserver(resize); observer.observe(canvas.parentElement ?? canvas); }
         if ('IntersectionObserver' in window) {
           intersectionObserver = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; updateRendering(); });
-          intersectionObserver.observe(canvas);
+          if (observedHero) intersectionObserver.observe(observedHero);
+        } else {
+          visible = Boolean(observedHero);
         }
         window.addEventListener('pointermove', onPointerMove, { passive: true });
         window.addEventListener('pointerleave', onPointerLeave, { passive: true });
         document.addEventListener('visibilitychange', onVisibilityChange);
         window.addEventListener('resize', resize);
-        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', onMotionChange);
         updateRendering();
       } catch (error) {
         if (!destroyed) {
@@ -184,17 +215,43 @@ export function HeroScene({ fallbackImage }: { fallbackImage: string }) {
       }
     };
 
-    void initialize();
+    startInitialization = () => {
+      if (destroyed || initializationStarted || reducedMotion || !document.querySelector('.hero')) return;
+      initializationStarted = true;
+      setUnavailable(false);
+      void initialize();
+    };
+    const observeHero = () => {
+      const hero = document.querySelector('.hero');
+      if (hero === observedHero) return;
+      observedHero = hero;
+      visible = false;
+      intersectionObserver?.disconnect();
+      if (hero && intersectionObserver) intersectionObserver.observe(hero);
+      if (hero && reducedMotion) setUnavailable(true);
+      else if (hero) startInitialization();
+      else {
+        setUnavailable(false);
+        stopRendering();
+      }
+    };
+
+    motionPreference.addEventListener('change', onMotionChange);
+    routeObserver = new MutationObserver(observeHero);
+    routeObserver.observe(document.body, { childList: true, subtree: true });
+    observeHero();
+
     return () => {
       destroyed = true;
       stopRendering();
       observer?.disconnect();
       intersectionObserver?.disconnect();
+      routeObserver?.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('resize', resize);
-      window.matchMedia('(prefers-reduced-motion: reduce)').removeEventListener('change', onMotionChange);
+      motionPreference.removeEventListener('change', onMotionChange);
       scene?.traverse(object => {
         if (three && (object instanceof three.Mesh || object instanceof three.Points)) {
           object.geometry.dispose();

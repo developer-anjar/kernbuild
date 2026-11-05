@@ -1,15 +1,19 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { SITE_CONFIG, STATISTICS_DATA } from '../config/site';
+import { SITE_CONFIG } from '../config/site';
 import { PROCESS_DATA } from '../data/process';
 import { SERVICES_DATA } from '../data/services';
 import { TECHNOLOGIES_DATA } from '../data/technologies';
 import { WHY_CHOOSE_DATA } from '../data/why-choose';
-import type { StatisticMetric } from '../types/statistics';
+import { TESTIMONIALS_DATA } from '../data/testimonials';
+import { STATISTICS_DATA } from '../data/company';
 import { useProjects } from '../contexts/ProjectsContext';
 import { useHomeMotion } from '../hooks/useHomeMotion';
+import { TeamSection as InteractiveTeamSection } from '../components/team/TeamSection';
 import { ContactForm, FeedbackForm } from '../components/Forms';
 import { ProjectCard, ServiceCard } from '../components/Cards';
+import { MagneticButton } from '../components/animations/MagneticButton';
+import { scrollToSection } from '../services/smoothScroll';
 
 export function HomePage() {
   const [animationRoot, setAnimationRoot] = useState<HTMLDivElement | null>(null);
@@ -22,6 +26,7 @@ export function HomePage() {
       <ServicesSection />
       <ProjectsSection />
       <ProcessSection />
+      <InteractiveTeamSection />
       <WhyChooseSection />
       <TestimonialsSection />
       <ContactSection />
@@ -38,24 +43,46 @@ function HeroSection() {
       <div className="container hero-grid">
         <div className="hero-copy">
           <p className="eyebrow">Software that moves your business forward</p>
-          <h1>Build from the <span>core.</span></h1>
+          <h1>Build from<br />the <span>core.</span></h1>
           <p className="hero-description">We turn your ideas into thoughtful digital products—from custom web applications and dashboards to AI-powered tools.</p>
           <div className="hero-actions">
-            <Link className="button" to="/#contact">Let&apos;s build something <span aria-hidden="true">→</span></Link>
-            <Link className="button button--outline" to="/#projects">Explore our work</Link>
+            <MagneticButton strength={0.25}>
+              <Link className="button" to="/#contact">Let&apos;s build something <span aria-hidden="true">→</span></Link>
+            </MagneticButton>
+            <MagneticButton strength={0.25}>
+              <Link className="button button--outline" to="/#projects">Explore our work</Link>
+            </MagneticButton>
           </div>
           <div className="hero-points" aria-label="KernBuild capabilities">
             <span><i aria-hidden="true" /> Product-minded development</span>
             <span><i aria-hidden="true" /> From frontend to deployment</span>
           </div>
         </div>
-        <div className="hero-visual" aria-label="Workspace illustration">
+        <div className="hero-visual">
+          <div className="hero-visual__glow" aria-hidden="true" />
+          <img
+            className="hero-visual__image"
+            src={`/${SITE_CONFIG.images.hero}`}
+            alt="Illustrated software dashboard showing project metrics and progress"
+            fetchPriority="high"
+          />
           <div className="hero-art" aria-hidden="true">
-            <div className="hero-art__badge hero-art__badge--one">Ideas, engineered</div>
+            <div className="hero-art__badge hero-art__badge--one"><span>✦</span> Ideas, engineered</div>
             <div className="hero-art__badge hero-art__badge--two"><b /> Built to scale</div>
           </div>
         </div>
       </div>
+      <button
+        type="button"
+        className="hero-scroll-indicator"
+        onClick={() => scrollToSection('about')}
+        aria-label="Scroll down to About section"
+      >
+        <div className="hero-scroll-indicator__mouse" aria-hidden="true">
+          <div className="hero-scroll-indicator__wheel" />
+        </div>
+        <span>Scroll</span>
+      </button>
     </section>
   );
 }
@@ -65,7 +92,24 @@ function TechnologyStrip() {
     <section className="technology-strip" aria-label="Technologies">
       <div className="container technology-content">
         <p>Tools we work with</p>
-        <div className="technology-list">{TECHNOLOGIES_DATA.map(technology => <span key={technology.name}>{technology.name}</span>)}</div>
+        <div className="technology-marquee">
+          <div className="technology-marquee__track">
+            {[0, 1].map(copy => (
+              <div
+                className="technology-list"
+                key={copy}
+                role={copy === 0 ? 'list' : undefined}
+                aria-hidden={copy === 1 ? 'true' : undefined}
+              >
+                {TECHNOLOGIES_DATA.map(technology => (
+                  <span key={technology.name} role={copy === 0 ? 'listitem' : undefined}>
+                    {technology.name}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -77,15 +121,7 @@ function AboutSection() {
     <section className="section about-section" id="about">
       <div className="container about-grid">
         <div className="about-art">
-          <div className="about-art__placeholder">
-            <div className="about-art__core"><span>K</span></div>
-            <div className="about-art__orbit about-art__orbit--one" />
-            <div className="about-art__orbit about-art__orbit--two" />
-            <span className="about-art__label about-art__label--one">Design</span>
-            <span className="about-art__label about-art__label--two">Engineering</span>
-            <span className="about-art__label about-art__label--three">Impact</span>
-          </div>
-          {imageVisible && <img src={SITE_CONFIG.images.about} alt="KernBuild design and development illustration" loading="lazy" onError={() => setImageVisible(false)} />}
+          {imageVisible && <img src={SITE_CONFIG.images.about} alt="KernBuild logo" loading="lazy" onError={() => setImageVisible(false)} />}
         </div>
         <div className="about-copy">
           <p className="eyebrow">About KernBuild</p>
@@ -192,7 +228,7 @@ function ServicesSection() {
 }
 
 function ProjectsSection() {
-  const { featuredProjects } = useProjects();
+  const { featuredProjects, loading, error, refresh } = useProjects();
   return (
     <section className="section section--cinematic" id="projects">
       <div className="container">
@@ -201,7 +237,11 @@ function ProjectsSection() {
           <h2>Ideas taking shape</h2>
           <p>A few of the products we’re building. Project visuals are placeholders until final screenshots are available.</p>
         </header>
-        <div className="projects-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
+        {loading ? <p className="empty-state" role="status">Loading projects…</p> : error ? (
+          <div className="empty-state" role="alert">{error} <button className="text-link" type="button" onClick={() => void refresh()}>Try again</button></div>
+        ) : featuredProjects.length ? (
+          <div className="projects-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
+        ) : <p className="empty-state" role="status">No featured projects are available yet.</p>}
         <div className="section-action"><Link className="button button--outline" to="/projects">Browse projects and filters <span aria-hidden="true">→</span></Link></div>
       </div>
     </section>
@@ -214,6 +254,9 @@ function ProcessSection() {
       <div className="container">
         <header className="section-heading"><p className="eyebrow">How we work</p><h2>A clear path from idea to launch</h2><p>Collaborative at every step, with clear decisions and progress along the way.</p></header>
         <div className="process-grid">
+          <div className="process-line-track" aria-hidden="true">
+            <div className="process-line-progress" />
+          </div>
           {PROCESS_DATA.map(step => <article className="process-card" key={step.step}>
             <span className="process-number">0{step.step}</span>
             <span className="process-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d={step.icon} /></svg></span>
@@ -242,20 +285,32 @@ function WhyChooseSection() {
 }
 
 function TestimonialsSection() {
+  const testimonials = TESTIMONIALS_DATA;
+
   return (
     <section className="section testimonials-section">
       <div className="container">
         <header className="section-heading"><p className="eyebrow">Client stories</p><h2>Built together, improved together</h2></header>
-        <div className="testimonial-placeholder">
-          <span className="testimonial-mark" aria-hidden="true">“</span>
-          <p>We’ll share client stories here when we have permission to publish verified feedback.</p>
-          <Link className="text-link" to="/feedback">Share your experience <span aria-hidden="true">→</span></Link>
-        </div>
+        {testimonials.length ? (
+          <div className="testimonials-grid">
+            {testimonials.map(testimonial => <article className="testimonial-card" key={testimonial.id}>
+              <span className="testimonial-card__rating" aria-label={`${testimonial.rating} out of 5 stars`}>{'★'.repeat(testimonial.rating)}</span>
+              <blockquote>{testimonial.feedback}</blockquote>
+              <p className="testimonial-card__author">{testimonial.clientName}</p>
+              {(testimonial.designation || testimonial.companyName) && <p className="testimonial-card__detail">{[testimonial.designation, testimonial.companyName].filter(Boolean).join(' · ')}</p>}
+            </article>)}
+          </div>
+        ) : (
+          <div className="testimonial-placeholder">
+            <span className="testimonial-mark" aria-hidden="true">“</span>
+            <p>We’ll share client stories here when we have permission to publish verified feedback.</p>
+            <Link className="text-link" to="/feedback">Share your experience <span aria-hidden="true">→</span></Link>
+          </div>
+        )}
       </div>
     </section>
   );
 }
-
 export function ContactSection() {
   return (
     <section className="section section--muted" id="contact">
@@ -286,49 +341,69 @@ export function FeedbackSection({ standalonePage = false }: { standalonePage?: b
 
 function StatisticsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [animatedValues, setAnimatedValues] = useState<Record<string, number>>({});
+  const statistics = STATISTICS_DATA;
+
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || typeof IntersectionObserver === 'undefined') return;
-    const frames: number[] = [];
+    if (!section) return;
+    const frames = new Set<number>();
+    const showFinalValue = (card: HTMLElement) => {
+      const metric = statistics.find(item => item.id === card.dataset.statId);
+      const valueElement = card.querySelector<HTMLElement>('.statistic-value');
+      if (metric && valueElement) {
+        valueElement.textContent = `${metric.prefix ?? ''}${metric.value}${metric.suffix ?? ''}`;
+      }
+    };
+    if (typeof IntersectionObserver === 'undefined') {
+      section.querySelectorAll<HTMLElement>('[data-stat-id]').forEach(showFinalValue);
+      return;
+    }
+
     const observer = new IntersectionObserver(entries => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
         const id = (entry.target as HTMLElement).dataset.statId;
-        const metric = STATISTICS_DATA.find(item => item.id === id);
+        const metric = statistics.find(item => item.id === id);
         if (!metric || typeof metric.value !== 'number') continue;
         observer.unobserve(entry.target);
+        const valueElement = entry.target.querySelector<HTMLElement>('.statistic-value');
+        if (!valueElement) continue;
         const target = metric.value;
         const started = performance.now();
         const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 850;
+        let frame = 0;
         const update = (now: number) => {
+          frames.delete(frame);
           const progress = duration === 0 ? 1 : Math.min((now - started) / duration, 1);
           const eased = 1 - (1 - progress) ** 3;
-          setAnimatedValues(values => ({ ...values, [metric.id]: Math.round(target * eased) }));
-          if (progress < 1) frames.push(requestAnimationFrame(update));
+          valueElement.textContent = `${metric.prefix ?? ''}${Math.round(target * eased)}${metric.suffix ?? ''}`;
+          if (progress < 1) {
+            frame = requestAnimationFrame(update);
+            frames.add(frame);
+          }
         };
-        frames.push(requestAnimationFrame(update));
+        frame = requestAnimationFrame(update);
+        frames.add(frame);
       }
     }, { threshold: 0.35 });
     section.querySelectorAll<HTMLElement>('[data-stat-id]').forEach(card => observer.observe(card));
     return () => { observer.disconnect(); frames.forEach(cancelAnimationFrame); };
-  }, []);
-  const valueFor = (metric: StatisticMetric) => typeof metric.value !== 'number' ? metric.value : animatedValues[metric.id] ?? 0;
+  }, [statistics]);
+
   return (
     <section className="section section--cinematic statistics-section" ref={sectionRef}>
       <div className="container">
-        <header className="section-heading"><p className="eyebrow">KernBuild at a glance</p><h2>Built on capabilities, not inflated numbers</h2><p>These are illustrative placeholders only, not verified business results. We’ll replace them with confirmed figures before publishing claims.</p></header>
+        <header className="section-heading"><p className="eyebrow">KernBuild at a glance</p><h2>Built on capabilities, not inflated numbers</h2><p>Statistics shown are illustrative placeholders and not verified figures.</p></header>
         <div className="statistics-grid">
-          {STATISTICS_DATA.map(metric => <article className="statistic-card" data-stat-id={metric.id} key={metric.id}>
-            <span className="statistic-value" aria-label="Illustrative placeholder metric">{metric.prefix ?? ''}{valueFor(metric)}{metric.suffix ?? ''}</span>
-            <h3>{metric.label}</h3><p>Illustrative placeholder · not verified</p>
+          {statistics.map(metric => <article className="statistic-card" data-stat-id={metric.id} key={metric.id}>
+            <span className="statistic-value">{metric.prefix ?? ''}{typeof metric.value === 'number' ? 0 : metric.value}{metric.suffix ?? ''}</span>
+            <h3>{metric.label}</h3><p>{metric.isPlaceholder ? 'Illustrative placeholder · not verified' : 'Current statistic'}</p>
           </article>)}
         </div>
       </div>
     </section>
   );
 }
-
 function FinalCtaSection() {
   return (
     <section className="final-cta">
@@ -336,7 +411,9 @@ function FinalCtaSection() {
         <p className="eyebrow">Your next idea starts here</p>
         <h2>Ready to build from the core?</h2>
         <p>Let’s shape a practical solution around the people who will use it.</p>
-        <Link className="button button--light" to="/#contact">Start a conversation <span aria-hidden="true">→</span></Link>
+        <MagneticButton strength={0.3}>
+          <Link className="button button--light" to="/#contact">Start a conversation <span aria-hidden="true">→</span></Link>
+        </MagneticButton>
       </div>
     </section>
   );

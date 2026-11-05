@@ -8,21 +8,47 @@ import { setActiveLenis } from '../services/smoothScroll';
 export function SmoothScroll() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const lenis = new Lenis({ autoRaf: false, anchors: true, smoothWheel: true, syncTouch: false, lerp: 0.1 });
-    const updateScroll = (time: number) => lenis.raf(time * 1000);
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let lenis: Lenis | null = null;
+    let updateScroll: ((time: number) => void) | null = null;
 
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(updateScroll);
-    gsap.ticker.lagSmoothing(0);
-    setActiveLenis(lenis);
-    ScrollTrigger.refresh();
-
-    return () => {
+    const stopLenis = () => {
+      if (!lenis || !updateScroll) return;
       setActiveLenis(null);
       lenis.off('scroll', ScrollTrigger.update);
       gsap.ticker.remove(updateScroll);
-      gsap.ticker.lagSmoothing(500, 33);
       lenis.destroy();
+      lenis = null;
+      updateScroll = null;
+    };
+
+    const startLenis = () => {
+      if (lenis || motionPreference.matches) return;
+      lenis = new Lenis({
+        autoRaf: false,
+        anchors: false,
+        smoothWheel: true,
+        syncTouch: false,
+        lerp: 0.18,
+      });
+      updateScroll = (time: number) => lenis?.raf(time * 1000);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(updateScroll);
+      setActiveLenis(lenis);
+      ScrollTrigger.refresh();
+    };
+
+    const onMotionPreferenceChange = () => {
+      if (motionPreference.matches) stopLenis();
+      else startLenis();
+    };
+
+    startLenis();
+    motionPreference.addEventListener('change', onMotionPreferenceChange);
+
+    return () => {
+      motionPreference.removeEventListener('change', onMotionPreferenceChange);
+      stopLenis();
     };
   }, []);
 

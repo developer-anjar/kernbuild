@@ -5,6 +5,10 @@
 /tmp
 /bazel-out
 
+# Local environment configuration
+/.env*
+!/.env.example
+
 # Node
 /node_modules
 /.npm-cache

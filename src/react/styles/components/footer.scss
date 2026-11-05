@@ -1,10 +1,10 @@
 .footer {
   position: relative;
   overflow: hidden;
-  border-top: 1px solid #ffffff12;
-  background: radial-gradient(ellipse at 82% 0%, #6426e81a, transparent 34%), #090b11;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
   padding: 4.5rem 0 0;
-  color: #e6e7ed;
+  color: var(--color-heading);
 
   &__container {
     max-width: var(--container-width);
@@ -41,30 +41,30 @@
   }
 
   &__logo-kern {
-    color: #fff;
+    color: var(--color-heading);
   }
 
   &__logo-build {
-    color: var(--color-primary);
+    color: var(--color-primary-orange);
   }
 
   &__tagline {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #f0f1f5;
+    color: var(--color-heading);
     margin-bottom: 0.75rem;
   }
 
   &__desc {
     font-size: 0.8125rem;
-    color: #9da2b1;
+    color: var(--color-body);
     line-height: 1.6;
   }
 
   &__col-title {
     font-size: 0.875rem;
     font-weight: 700;
-    color: #f3f4f7;
+    color: var(--color-heading);
     margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -77,12 +77,12 @@
 
     a {
       font-size: 0.875rem;
-      color: #a4a8b7;
+      color: var(--color-body);
       cursor: pointer;
       transition: color var(--transition-fast);
 
       &:hover {
-        color: var(--color-primary);
+        color: var(--color-primary-orange);
       }
     }
   }
@@ -96,17 +96,19 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #ffffff12;
-    color: #ff9a68;
+    background: var(--color-bg-section);
+    color: var(--color-primary-orange);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.75rem;
     font-weight: 700;
     transition: all var(--transition-base);
+    border: 1px solid var(--color-border);
 
     &:hover {
-      background: var(--color-purple);
+      background: var(--color-primary-purple);
+      border-color: var(--color-primary-purple);
       color: #fff;
       transform: translateY(-2px);
     }
@@ -114,21 +116,21 @@
 
   &__placeholder-text {
     font-size: 0.8125rem;
-    color: #a4a8b7;
+    color: var(--color-muted);
     font-style: italic;
   }
 
   &__email {
     display: inline-block;
     margin-bottom: 1rem;
-    color: var(--color-primary);
+    color: var(--color-primary-orange);
     font-size: .875rem;
     font-weight: 600;
     overflow-wrap: anywhere;
   }
 
   &__bottom {
-    border-top: 1px solid #ffffff18;
+    border-top: 1px solid var(--color-border);
     padding: 1.5rem 0;
     display: flex;
     align-items: center;
@@ -139,7 +141,7 @@
 
   &__copyright {
     font-size: 0.8125rem;
-    color: #9095a5;
+    color: var(--color-muted);
   }
 
   &__legal {
@@ -148,11 +150,11 @@
 
     a {
       font-size: 0.8125rem;
-      color: #a4a8b7;
+      color: var(--color-body);
       transition: color var(--transition-fast);
 
       &:hover {
-        color: var(--color-primary);
+        color: var(--color-primary-orange);
       }
     }
   }

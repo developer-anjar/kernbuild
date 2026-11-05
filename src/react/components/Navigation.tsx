@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SITE_CONFIG } from '../config/site';
 import { environment } from '../config/environment';
-import { scrollToSection, scrollToTop } from '../services/smoothScroll';
+import { scrollToPosition, scrollToSection, scrollToTop } from '../services/smoothScroll';
+import { MagneticButton } from './animations/MagneticButton';
 
 const NAV_LINKS = [
   { label: 'Home', fragment: 'home' },
@@ -10,6 +13,7 @@ const NAV_LINKS = [
   { label: 'Services', fragment: 'services' },
   { label: 'Projects', fragment: 'projects' },
   { label: 'Process', fragment: 'process' },
+  { label: 'Team', fragment: 'team' },
   { label: 'Contact', fragment: 'contact' },
 ];
 
@@ -23,17 +27,42 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-      if (!isHomeRoute) return;
-      const active = NAV_LINKS.filter(link => {
-        const section = document.getElementById(link.fragment);
-        return Boolean(section && section.getBoundingClientRect().top <= 160);
-      }).at(-1);
-      setActiveSection(active?.fragment ?? 'home');
+      const nextScrolled = window.scrollY > 20;
+      setScrolled(current => current === nextScrolled ? current : nextScrolled);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+
+    if (!isHomeRoute) {
+      setActiveSection('');
+      return () => window.removeEventListener('scroll', onScroll);
+    }
+    if (!('IntersectionObserver' in window)) return () => window.removeEventListener('scroll', onScroll);
+
+    const visibleSections = new Set<HTMLElement>();
+    const sections = NAV_LINKS.map(link => document.getElementById(link.fragment)).filter(
+      (section): section is HTMLElement => section !== null,
+    );
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const section = entry.target as HTMLElement;
+        if (entry.isIntersecting) visibleSections.add(section);
+        else visibleSections.delete(section);
+      }
+      const active = [...visibleSections].sort(
+        (left, right) => left.getBoundingClientRect().top - right.getBoundingClientRect().top,
+      ).at(-1);
+      const preceding = active ? undefined : sections
+        .filter(section => section.getBoundingClientRect().top <= window.innerHeight * 0.4)
+        .at(-1);
+      setActiveSection(active?.id ?? preceding?.id ?? 'home');
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(section => observer.observe(section));
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      observer.disconnect();
+    };
   }, [isHomeRoute]);
 
   const goTo = (fragment: string) => {
@@ -55,11 +84,7 @@ export function Navbar() {
       <div className="navbar__container">
         <a className="navbar__logo" href="/#home" onClick={event => { event.preventDefault(); goTo('home'); }} aria-label="KernBuild home">
           <span className="navbar__logo-icon" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
-              <rect width="32" height="32" rx="8" fill="url(#logo-grad)" />
-              <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stopColor="#FF5A0A" /><stop offset="100%" stopColor="#6426E8" /></linearGradient></defs>
-              <path d="M10 8l6 8-6 8M16 16h6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <img src="/kernbuild-favicon.ico" alt="" width="32" height="32" />
           </span>
           <span className="navbar__brand">
             <span className="navbar__brand-text"><span className="navbar__brand-kern">kern</span><span className="navbar__brand-build">build</span></span>
@@ -80,7 +105,9 @@ export function Navbar() {
           <a className="navbar__cta navbar__cta--mobile" href="/#contact" onClick={event => { event.preventDefault(); goTo('contact'); }}>Let's Build <span aria-hidden="true">→</span></a>
         </nav>
 
-        <a className="navbar__cta navbar__cta--desktop" href="/#contact" onClick={event => { event.preventDefault(); goTo('contact'); }}>Let's Build <span aria-hidden="true">→</span></a>
+        <MagneticButton strength={0.25} className="navbar__cta--desktop-wrap">
+          <a className="navbar__cta navbar__cta--desktop" href="/#contact" onClick={event => { event.preventDefault(); goTo('contact'); }}>Let's Build <span aria-hidden="true">→</span></a>
+        </MagneticButton>
         <button
           className="navbar__hamburger"
           type="button"
@@ -99,6 +126,7 @@ export function Navbar() {
 }
 
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
   const businessEmail = environment.businessEmail.trim();
   const navLinks = NAV_LINKS;
   const serviceLinks = ['Web Applications', 'Full-Stack Development', 'AI Integration', 'Dashboards', 'Deployment'];
@@ -109,8 +137,27 @@ export function Footer() {
   ];
   const visibleSocials = socialLinks.filter(social => !!social.url);
 
+  useEffect(() => {
+    const footer = footerRef.current;
+    if (!footer) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const motion = gsap.matchMedia(footer);
+    motion.add('(prefers-reduced-motion: no-preference)', () => {
+      const targets = footer.querySelectorAll('.footer__grid > *, .footer__bottom');
+      gsap.fromTo(targets, { autoAlpha: 0, y: 18 }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.65,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: footer, start: 'top 88%', once: true },
+      });
+    });
+    return () => motion.revert();
+  }, []);
+
   return (
-    <footer className="footer">
+    <footer className="footer" ref={footerRef}>
       <div className="footer__container">
         <div className="footer__grid">
           <div className="footer__brand">
@@ -161,7 +208,10 @@ export function Footer() {
 export function BackToTop() {
   const [visible, setVisible] = useState(window.scrollY > 500);
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 500);
+    const onScroll = () => {
+      const nextVisible = window.scrollY > 500;
+      setVisible(current => current === nextVisible ? current : nextVisible);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -174,13 +224,62 @@ export function BackToTop() {
 
 export function RouteScroll() {
   const location = useLocation();
+  const navigationType = useNavigationType();
+  const positions = useRef(new Map<string, number>());
+
   useEffect(() => {
-    if (!location.hash) {
-      scrollToTop(true);
-      return;
-    }
-    const id = decodeURIComponent(location.hash.slice(1));
-    requestAnimationFrame(() => scrollToSection(id));
-  }, [location.pathname, location.hash]);
+    const previousRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+    return () => { window.history.scrollRestoration = previousRestoration; };
+  }, []);
+
+  useEffect(() => {
+    let navigationStarted = false;
+    const savePosition = () => {
+      positions.current.set(location.key, window.scrollY);
+      if (positions.current.size > 30) {
+        const oldestKey = positions.current.keys().next().value;
+        if (oldestKey) positions.current.delete(oldestKey);
+      }
+    };
+    const onScroll = () => {
+      if (!navigationStarted) savePosition();
+    };
+    const onNavigationClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const link = target.closest('a[href]');
+      if (!(link instanceof HTMLAnchorElement) || (link.target && link.target !== '_self')) return;
+      const destination = new URL(link.href, window.location.href);
+      const current = `${location.pathname}${location.search}${location.hash}`;
+      if (destination.origin !== window.location.origin ||
+          `${destination.pathname}${destination.search}${destination.hash}` === current) return;
+      navigationStarted = true;
+      savePosition();
+    };
+
+    if (!positions.current.has(location.key)) savePosition();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('click', onNavigationClick, true);
+    return () => {
+      if (!navigationStarted) savePosition();
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('click', onNavigationClick, true);
+    };
+  }, [location.key, location.pathname, location.search, location.hash]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      if (navigationType === 'POP' && positions.current.has(location.key)) {
+        scrollToPosition(positions.current.get(location.key) ?? 0);
+      } else if (location.hash) {
+        const id = decodeURIComponent(location.hash.slice(1));
+        scrollToSection(id);
+      } else {
+        scrollToTop(true);
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [location.key, location.pathname, location.hash, navigationType]);
   return null;
 }
