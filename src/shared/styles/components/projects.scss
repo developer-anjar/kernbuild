@@ -1,4 +1,51 @@
+.project-carousel { --project-carousel-gap: 1.25rem; }
+.project-carousel__controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.project-carousel__status { margin: 0; color: var(--color-body); font-size: .875rem; }
+.project-carousel__arrows { display: flex; gap: .55rem; }
+.project-carousel__arrows button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-heading);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+.project-carousel__arrows button:hover:not(:disabled) { border-color: var(--kb-orange-strong); background: var(--kb-orange-strong); color: #fff; }
+.project-carousel__arrows button:disabled { cursor: not-allowed; opacity: .4; }
+.project-carousel__arrows button:focus-visible,
+.project-carousel__pagination button:focus-visible { outline: 3px solid var(--kb-orange-strong); outline-offset: 3px; }
+.project-carousel__track {
+  display: flex;
+  gap: var(--project-carousel-gap);
+  overflow-x: auto;
+  padding: .25rem .1rem 1rem;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary-purple) transparent;
+}
+.project-carousel__track:focus-visible { border-radius: 1rem; outline: 3px solid var(--kb-orange-strong); outline-offset: 3px; }
+.project-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.project-carousel__page-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--project-carousel-gap); }
+.project-carousel__page-grid .project-card { height: 100%; }
+.project-carousel__pagination { display: flex; justify-content: center; gap: .5rem; margin-top: .75rem; }
+.project-carousel__pagination button { width: .65rem; height: .65rem; padding: 0; border: 0; border-radius: 50%; background: #c9cbd5; cursor: pointer; transition: width .2s ease, border-radius .2s ease, background .2s ease; }
+.project-carousel__pagination button.active { width: 1.6rem; border-radius: 999px; background: var(--color-primary-purple); }
 .projects-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .section-action { display: flex; justify-content: center; margin-top: 2.5rem; }
 @media (max-width: 900px) { .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .project-carousel__page-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .project-carousel__page-grid { grid-template-columns: 1fr; } .project-carousel__controls { align-items: flex-start; } }
+@media (prefers-reduced-motion: reduce) { .project-carousel__track { scroll-behavior: auto; } .project-carousel__arrows button, .project-carousel__pagination button { transition: none; } }

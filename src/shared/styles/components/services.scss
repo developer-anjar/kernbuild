@@ -17,7 +17,7 @@
   svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   &:hover:not(:disabled) { border-color: var(--color-primary); background: var(--color-primary); color: #fff; }
   &:disabled { cursor: not-allowed; opacity: .4; }
-  &:focus-visible { outline: 3px solid #ff5a0a55; outline-offset: 3px; }
+  &:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
 }
 .carousel__track {
   display: flex;
@@ -30,7 +30,7 @@
   scrollbar-width: none;
 
   &::-webkit-scrollbar { display: none; }
-  &:focus-visible { border-radius: 1rem; outline: 3px solid #ff5a0a55; outline-offset: 3px; }
+  &:focus-visible { border-radius: 1rem; outline: 3px solid var(--color-primary); outline-offset: 3px; }
 }
 .carousel__slide {
   flex: 0 0 calc((100% - var(--carousel-gap) * 2) / 3);
@@ -50,7 +50,7 @@
   transition: width .2s ease, border-radius .2s ease, background .2s ease;
 
   &.active { width: 28px; border-radius: 99px; background: var(--color-primary); }
-  &:focus-visible { outline: 3px solid #ff5a0a55; outline-offset: 3px; }
+  &:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
 }
 @media (max-width: 900px) {
   .carousel__slide { flex-basis: calc((100% - var(--carousel-gap)) / 2); }

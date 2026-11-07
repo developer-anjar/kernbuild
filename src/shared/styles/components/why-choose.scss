@@ -1,8 +1,155 @@
-.reasons-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-.reason-card { display: flex; gap: 1rem; padding: 1.25rem; border: 1px solid #fff; border-radius: 1rem; background: #ffffffc7; box-shadow: 0 8px 26px #6426e80a; }
-.reason-icon { display: grid; width: 46px; height: 46px; flex: 0 0 auto; place-items: center; border-radius: .8rem; background: #fff; color: var(--color-purple); }
-.reason-icon svg { width: 23px; height: 23px; }
-.reason-card h3 { margin: .1rem 0 .35rem; font-size: 1.05rem; }
-.reason-card p { margin: 0; color: var(--color-secondary-text); font-size: .88rem; }
-@media (max-width: 900px) { .reasons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px) { .reasons-grid { grid-template-columns: 1fr; } }
+.why-choose-section {
+  position: relative;
+  background: var(--color-bg-section, #F3F6FC);
+}
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.reason-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border: 1px solid var(--color-border, #E8EAF0);
+  border-radius: 18px;
+  background: var(--color-white, #FFFFFF);
+  box-shadow: 0 4px 16px rgba(16, 20, 38, 0.04);
+  transition: transform 0.3s cubic-bezier(0.2, 0.75, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(16, 20, 38, 0.08), 0 0 0 1px rgba(255, 90, 31, 0.2);
+    border-color: rgba(255, 90, 31, 0.3);
+
+    .reason-icon {
+      background: linear-gradient(135deg, #FF5A1F, #FF8A00);
+      color: #FFFFFF;
+      transform: scale(1.08) rotate(-4deg);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  &__number {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-muted, #8A91A3);
+    background: var(--color-bg-secondary, #F8FAFC);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border, #E8EAF0);
+  }
+
+  &__content {
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--color-dark-navy, #101426);
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--color-secondary-text, #596174);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+  }
+}
+
+.reason-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 12px;
+  background: #F3EEFF;
+  color: var(--color-primary-purple, #681FEA);
+  border: 1px solid rgba(104, 31, 234, 0.12);
+  transition: all 0.3s cubic-bezier(0.2, 0.75, 0.25, 1);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Strong Visual Statement Card */
+.why-choose-statement {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #101426 0%, #1A2038 100%);
+  color: #FFFFFF;
+  text-align: center;
+  box-shadow: 0 20px 48px rgba(16, 20, 38, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(255, 90, 31, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+
+    .statement-icon {
+      display: inline-block;
+      font-size: 1.5rem;
+      color: var(--color-primary-orange, #FF5A1F);
+      margin-bottom: 0.75rem;
+    }
+
+    h3 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+      color: #FFFFFF;
+    }
+
+    p {
+      margin: 0;
+      color: #A0AEC0;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .reasons-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .reasons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-choose-statement {
+    padding: 2rem 1.25rem;
+  }
+}

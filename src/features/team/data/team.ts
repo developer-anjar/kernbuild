@@ -31,7 +31,7 @@ export const TEAM_DATA: TeamMember[] = [
     designation: 'Co-Founder & CTO',
     title: 'Chief Technology Officer',
     accentColor: '#681FEA',
-    profileImage: '/images/team/placeholder-avatar.svg',
+    profileImage: '/images/team/atharv.jpeg',
     skills: [
       'Full Stack Development',
       'Frontend Development',
@@ -67,7 +67,7 @@ export const TEAM_DATA: TeamMember[] = [
     designation: 'Co-Founder & CMO',
     title: 'Chief Marketing Officer',
     accentColor: '#FF8A00',
-    profileImage: '/images/team/placeholder-avatar.svg',
+    profileImage: '/images/team/aakanksha.png',
     skills: [
       'Marketing Strategy',
       'Brand Positioning',

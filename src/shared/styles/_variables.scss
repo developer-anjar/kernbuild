@@ -1,82 +1,128 @@
-/* Light Theme Design Tokens */
+/* KernBuild design tokens. Keep legacy aliases here until styles migrate. */
 :root {
-  /* Primary Colors */
-  --color-bg-main: #FFFFFF;               /* Main background */
-  --color-bg-secondary: #F8FAFC;          /* Secondary background */
-  --color-bg-section: #F3F6FC;            /* Section background */
-  --color-primary-orange: #FF5A1F;        /* Primary orange */
-  --color-secondary-orange: #FF8A00;      /* Secondary orange */
-  --color-primary-purple: #681FEA;        /* Primary purple */
-  --color-secondary-purple: #8B35E8;      /* Secondary purple */
-  --color-heading: #101426;               /* Dark navy heading */
-  --color-body: #596174;                  /* Body text */
-  --color-muted: #8A91A3;                 /* Muted text */
-  --color-border: #E8EAF0;                /* Border */
-  --color-card-bg: #FFFFFF;               /* Card background */
+  color-scheme: light;
 
-  /* Gradient Tokens */
-  --gradient-orange: linear-gradient(135deg, #FF4D1F, #FF9200);
-  --gradient-purple: linear-gradient(135deg, #681FEA, #A32BEA);
-  --gradient-text: linear-gradient(90deg, #FF5A1F, #A02BEA);
+  --kb-bg: #ffffff;
+  --kb-surface-muted: #f8fafc;
+  --kb-surface-soft: #f3f6fc;
+  --kb-surface-card: #ffffff;
+  --kb-text-strong: #101426;
+  --kb-text-body: #596174;
+  --kb-text-muted: #667085;
+  --kb-border: #e8eaf0;
+  --kb-orange: #ff5a1f;
+  --kb-orange-strong: #b33a0b;
+  --kb-purple: #681fea;
+  --kb-lavender: #f3eeff;
+  --kb-success: #17613a;
+  --kb-error: #a51d31;
 
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
+  --kb-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kb-text-xs: 0.75rem;
+  --kb-text-sm: 0.875rem;
+  --kb-text-base: 1rem;
+  --kb-text-lg: 1.125rem;
+  --kb-text-xl: 1.25rem;
+  --kb-text-2xl: 1.5rem;
+  --kb-text-3xl: 2rem;
+  --kb-text-4xl: 2.75rem;
+  --kb-text-display: clamp(3rem, 7vw, 6.5rem);
 
-  /* Border Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1.25rem;
-  --radius-full: 9999px;
+  --kb-space-1: 0.25rem;
+  --kb-space-2: 0.5rem;
+  --kb-space-3: 0.75rem;
+  --kb-space-4: 1rem;
+  --kb-space-6: 1.5rem;
+  --kb-space-8: 2rem;
+  --kb-space-12: 3rem;
+  --kb-space-16: 4rem;
+  --kb-space-20: 5rem;
+  --kb-space-24: 6rem;
+  --kb-gutter: clamp(1.25rem, 4vw, 3rem);
+  --kb-container-max: 75rem;
+  --kb-section-space: clamp(4rem, 8vw, 7rem);
 
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 2rem;
-  --font-size-4xl: 2.75rem;
+  --kb-radius-sm: 0.375rem;
+  --kb-radius-md: 0.75rem;
+  --kb-radius-lg: 1.25rem;
+  --kb-radius-xl: 1.5rem;
+  --kb-radius-full: 9999px;
+  --kb-shadow-sm: 0 1px 2px rgb(16 20 38 / 6%);
+  --kb-shadow-md: 0 4px 12px rgb(16 20 38 / 8%);
+  --kb-shadow-lg: 0 12px 32px rgb(16 20 38 / 12%);
+  --kb-focus-ring: 0 0 0 3px rgb(179 58 11 / 22%);
 
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 400ms ease;
+  --kb-duration-fast: 180ms;
+  --kb-duration-base: 280ms;
+  --kb-duration-slow: 450ms;
+  --kb-ease-premium: cubic-bezier(0.2, 0.75, 0.25, 1);
+  --kb-z-navbar: 1000;
+  --kb-z-progress: 10001;
+  --kb-z-overlay: 11000;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(16, 20, 38, 0.06);
-  --shadow-md: 0 4px 12px rgba(16, 20, 38, 0.08);
-  --shadow-lg: 0 12px 32px rgba(16, 20, 38, 0.12);
+  --kb-gradient-brand: linear-gradient(110deg, #ff5a1f, #681fea);
+  --kb-gradient-cta: linear-gradient(110deg, #b33a0b, #681fea);
 
-  /* Breakpoints */
+  --color-bg-main: var(--kb-bg);
+  --color-bg-secondary: var(--kb-surface-muted);
+  --color-bg-section: var(--kb-surface-soft);
+  --color-primary: var(--kb-orange-strong);
+  --color-primary-hover: #8c2e08;
+  --color-primary-orange: var(--kb-orange-strong);
+  --color-orange-secondary: #ff8a00;
+  --color-brand-orange: var(--kb-orange);
+  --color-secondary-orange: #ff8a00;
+  --color-purple: var(--kb-purple);
+  --color-primary-purple: var(--kb-purple);
+  --color-secondary-purple: #8b35e8;
+  --color-heading: var(--kb-text-strong);
+  --color-body: var(--kb-text-body);
+  --color-muted: var(--kb-text-muted);
+  --color-secondary-text: var(--kb-text-body);
+  --color-dark-navy: var(--kb-text-strong);
+  --color-white: #ffffff;
+  --color-border: var(--kb-border);
+  --color-card-bg: var(--kb-surface-card);
+  --color-lavender: var(--kb-lavender);
+  --color-muted-bg: var(--kb-surface-muted);
+  --color-blue: #eaf4ff;
+
+  --gradient-orange: var(--kb-gradient-cta);
+  --gradient-purple: linear-gradient(135deg, #681fea, #8b35e8);
+  --gradient-text: var(--kb-gradient-brand);
+
+  --space-1: var(--kb-space-1);
+  --space-2: var(--kb-space-2);
+  --space-3: var(--kb-space-3);
+  --space-4: var(--kb-space-4);
+  --space-6: var(--kb-space-6);
+  --space-8: var(--kb-space-8);
+  --space-12: var(--kb-space-12);
+  --space-16: var(--kb-space-16);
+  --radius-sm: var(--kb-radius-sm);
+  --radius-md: var(--kb-radius-md);
+  --radius-lg: var(--kb-radius-lg);
+  --radius-full: var(--kb-radius-full);
+  --font-sans: var(--kb-font-sans);
+  --font-size-sm: var(--kb-text-sm);
+  --font-size-base: var(--kb-text-base);
+  --font-size-lg: var(--kb-text-lg);
+  --font-size-xl: var(--kb-text-xl);
+  --font-size-2xl: var(--kb-text-2xl);
+  --font-size-3xl: var(--kb-text-3xl);
+  --font-size-4xl: var(--kb-text-4xl);
+  --transition-fast: var(--kb-duration-fast);
+  --transition-base: var(--kb-duration-base);
+  --transition-slow: var(--kb-duration-slow);
+  --motion-fast: var(--kb-duration-fast);
+  --motion-base: var(--kb-duration-base);
+  --ease-premium: var(--kb-ease-premium);
+  --shadow-sm: var(--kb-shadow-sm);
+  --shadow-md: var(--kb-shadow-md);
+  --shadow-lg: var(--kb-shadow-lg);
+  --container-width: var(--kb-container-max);
   --bp-sm: 640px;
   --bp-md: 768px;
   --bp-lg: 1024px;
   --bp-xl: 1280px;
-}
-
-/* Global resets */
-* { box-sizing: border-box; }
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-sans);
-  color: var(--color-heading);
-  background: var(--color-bg-main);
-}
-img { max-width: 100%; display: block; }
-a { color: inherit; text-decoration: none; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

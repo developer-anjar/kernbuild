@@ -43,4 +43,32 @@ export const SERVICES_DATA: ServiceItem[] = [
     icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
     colorClass: 'blue',
   },
+  {
+    id: 'product-design',
+    title: 'Product Design & UX',
+    description: 'Clear user journeys, responsive interfaces, and polished prototypes shaped around real customer needs.',
+    icon: 'M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3zM19 14l1.2 3.2L23 18l-2.8 1-1.2 3-1.1-3-2.9-1 2.9-.8L19 14z',
+    colorClass: 'lavender',
+  },
+  {
+    id: 'ecommerce',
+    title: 'E-commerce Solutions',
+    description: 'Online storefronts with product discovery, checkout flows, and practical tools for managing a catalog.',
+    icon: 'M3 4h2l2.2 11.2a2 2 0 002 1.6h8.9a2 2 0 001.9-1.4L22 9H6M10 21h.01M18 21h.01',
+    colorClass: 'peach',
+  },
+  {
+    id: 'integrations',
+    title: 'API & Platform Integrations',
+    description: 'Connect the services your team already uses through dependable APIs and third-party integrations.',
+    icon: 'M9 7H6a3 3 0 000 6h3m6-6h3a3 3 0 010 6h-3M8 10h8m-8 3h8',
+    colorClass: 'blue',
+  },
+  {
+    id: 'maintenance',
+    title: 'Maintenance & Optimization',
+    description: 'Keep existing products healthy with focused improvements, performance tuning, and ongoing technical support.',
+    icon: 'M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z',
+    colorClass: 'lavender',
+  },
 ];

@@ -1,7 +1,510 @@
-.contact-grid { display: grid; grid-template-columns: .7fr 1.3fr; align-items: start; gap: 3rem; }
-.contact-copy h2 { margin: 0 0 1rem; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.12; letter-spacing: -.05em; }
-.contact-copy > p:not(.eyebrow) { color: var(--color-secondary-text); }
-.contact-note { display: flex; align-items: center; gap: .8rem; margin-top: 2rem; padding: 1rem; border-radius: .8rem; background: #fff; color: var(--color-secondary-text); }
-.contact-note span { color: var(--color-primary); }
-.contact-note p { margin: 0; font-size: .9rem; }
-@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 1rem; } }
+.contact-section {
+  position: relative;
+  background: var(--color-bg-secondary, #F8FAFC);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: start;
+  gap: 3.5rem;
+}
+
+.contact-copy {
+  h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(2rem, 3.8vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--color-dark-navy, #101426);
+  }
+
+  p {
+    color: var(--color-secondary-text, #596174);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 2rem;
+  }
+}
+
+.contact-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.contact-feat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  .feat-check {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #F3EEFF;
+    color: #681FEA;
+    font-size: 0.85rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-dark-navy, #101426);
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-secondary-text, #596174);
+    line-height: 1.5;
+  }
+}
+
+.contact-direct-cta {
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--color-border, #E8EAF0);
+  box-shadow: 0 4px 16px rgba(16, 20, 38, 0.04);
+
+  .direct-title {
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-dark-navy, #101426);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .direct-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-primary-orange, #FF5A1F);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #E8490B;
+      transform: translateX(3px);
+    }
+  }
+}
+
+/* ==========================================================================
+   Multi-Step Inquiry Form Styles
+   ========================================================================== */
+.inquiry-form-card {
+  padding: 2.25rem;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid var(--color-border, #E8EAF0);
+  box-shadow: 0 16px 48px rgba(16, 20, 38, 0.08);
+
+  &--success {
+    text-align: center;
+    padding: 3.5rem 2rem;
+
+    .inquiry-success-icon {
+      font-size: 3rem;
+      color: var(--color-primary-orange, #FF5A1F);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--color-dark-navy, #101426);
+      margin: 0 0 0.75rem;
+    }
+
+    p {
+      color: var(--color-secondary-text, #596174);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 2rem;
+    }
+  }
+}
+
+.inquiry-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border, #E8EAF0);
+}
+
+.inquiry-step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+
+  &.active {
+    opacity: 1;
+
+    .step-circle {
+      background: var(--color-primary-orange, #FF5A1F);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 4px rgba(255, 90, 31, 0.2);
+    }
+
+    .step-label {
+      color: var(--color-dark-navy, #101426);
+      font-weight: 700;
+    }
+  }
+
+  &.completed {
+    opacity: 0.9;
+
+    .step-circle {
+      background: #681FEA;
+      color: #FFFFFF;
+    }
+  }
+
+  .step-circle {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary, #F8FAFC);
+    border: 1px solid var(--color-border, #E8EAF0);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-secondary-text, #596174);
+    transition: all 0.2s ease;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-secondary-text, #596174);
+  }
+}
+
+.animate-step {
+  animation: stepFade 0.3s ease-out;
+}
+
+@keyframes stepFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.inquiry-step-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-dark-navy, #101426);
+}
+
+.inquiry-step-desc {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  color: var(--color-secondary-text, #596174);
+}
+
+/* Step 2 Requirements Pills Grid */
+.requirements-checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.requirement-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-bg-secondary, #F8FAFC);
+  border: 1.5px solid var(--color-border, #E8EAF0);
+  color: var(--color-dark-navy, #101426);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0.75, 0.25, 1);
+
+  &:hover {
+    border-color: var(--color-primary-orange, #FF5A1F);
+    background: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  &.selected {
+    background: linear-gradient(135deg, rgba(255, 90, 31, 0.1), rgba(104, 31, 234, 0.08));
+    border-color: var(--color-primary-orange, #FF5A1F);
+    color: var(--color-primary-orange, #FF5A1F);
+    box-shadow: 0 4px 12px rgba(255, 90, 31, 0.15);
+
+    .pill-check {
+      background: var(--color-primary-orange, #FF5A1F);
+      color: #FFFFFF;
+    }
+  }
+
+  .pill-check {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(16, 20, 38, 0.08);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+}
+
+/* Step 4 Review Card */
+.inquiry-review-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--color-bg-secondary, #F8FAFC);
+  padding: 1.5rem;
+  border-radius: 14px;
+  border: 1px solid var(--color-border, #E8EAF0);
+}
+
+.review-section {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border, #E8EAF0);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  p {
+    margin: 0 0 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-secondary-text, #596174);
+
+    strong {
+      color: var(--color-dark-navy, #101426);
+    }
+  }
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+
+  h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-dark-navy, #101426);
+  }
+
+  .review-edit-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary-orange, #FF5A1F);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.review-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.review-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #681FEA;
+  background: #F3EEFF;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
+/* Step Actions */
+.inquiry-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border, #E8EAF0);
+}
+
+.inquiry-btn-next,
+.inquiry-btn-submit {
+  min-height: 48px;
+  padding-inline: 1.75rem;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .inquiry-stepper .step-label {
+    display: none;
+  }
+
+  .inquiry-form-card {
+    padding: 1.5rem;
+  }
+}
+
+.contact-grid {
+  grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+.contact-copy h1,
+.contact-copy h2 {
+  margin: 0 0 1rem;
+  color: var(--color-heading);
+  font-size: clamp(2.15rem, 3.2vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -.055em;
+}
+
+.contact-copy .eyebrow {
+  margin-bottom: 1rem;
+  color: var(--color-primary-orange);
+  font-size: .75rem;
+  font-weight: 750;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.contact-copy > p:not(.eyebrow) {
+  max-width: 34rem;
+  color: var(--color-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.contact-note {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  margin-top: 2rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, .45);
+}
+
+.contact-note > span {
+  color: var(--color-primary-orange);
+  font-size: 1.25rem;
+}
+
+.contact-note p {
+  margin: 0;
+  color: var(--color-body);
+  line-height: 1.55;
+}
+
+.contact-form-wrapper {
+  min-width: 0;
+}
+
+.contact-section .form-card {
+  padding: clamp(1.4rem, 3vw, 2.1rem);
+  border: 1px solid var(--color-border);
+  border-radius: 1.35rem;
+  background: #fff;
+  box-shadow: 0 14px 40px rgba(16, 20, 38, .07);
+}
+
+.contact-section .form-grid {
+  column-gap: 1.2rem;
+  row-gap: 1.25rem;
+}
+
+.contact-section .form-field label {
+  font-size: .92rem;
+  font-weight: 700;
+}
+
+.contact-section .form-field label span:not([aria-hidden="true"]) {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.contact-section .form-field input,
+.contact-section .form-field textarea {
+  min-height: 3.25rem;
+  border-radius: .75rem;
+}
+
+.contact-section .form-field textarea {
+  min-height: 10rem;
+}
+
+.contact-section .form-actions {
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.contact-section .form-actions .button {
+  min-height: 3.25rem;
+  padding-inline: 1.5rem;
+  background: var(--kb-orange-strong);
+  color: #fff;
+}
+.contact-section .form-actions .button:hover { background: #8c2e08; }
+
+.contact-section .form-actions .field-error {
+  color: var(--color-body);
+}
+
+.contact-section--page {
+  padding-top: clamp(1rem, 3vw, 2rem);
+}
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .contact-section .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-section .form-field--full {
+    grid-column: auto;
+  }
+}

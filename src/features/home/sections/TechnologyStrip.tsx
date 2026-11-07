@@ -15,8 +15,14 @@ export function TechnologyStrip() {
                 aria-hidden={copy === 1 ? 'true' : undefined}
               >
                 {TECHNOLOGIES_DATA.map(technology => (
-                  <span key={technology.name} role={copy === 0 ? 'listitem' : undefined}>
-                    {technology.name}
+                  <span
+                    className="technology-item"
+                    key={technology.name}
+                    role={copy === 0 ? 'listitem' : undefined}
+                    style={{ color: technology.color }}
+                  >
+                    <span className="technology-item__logo">{technology.icon}</span>
+                    <span className="technology-item__name">{technology.name}</span>
                   </span>
                 ))}
               </div>

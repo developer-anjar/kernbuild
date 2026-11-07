@@ -9,7 +9,8 @@ export function AboutSection() {
     <section className="section about-section" id="about">
       <div className="container about-grid">
         <div className="about-art">
-          {imageVisible && <img src={SITE_CONFIG.images.about} alt="KernBuild logo" loading="lazy" onError={() => setImageVisible(false)} />}
+          {imageVisible && <img src={SITE_CONFIG.images.about} alt="KernBuild logo mark and wordmark" loading="lazy" onError={() => setImageVisible(false)} />}
+          <p className="about-art__tagline">Build from the Core</p>
         </div>
         <div className="about-copy">
           <p className="eyebrow">About KernBuild</p>

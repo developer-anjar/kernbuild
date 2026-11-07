@@ -6,7 +6,7 @@ export const SITE_CONFIG = {
   },
   images: {
     hero: 'images/hero/hero-workspace-placeholder.svg',
-    about: 'images/hero/KB-transparent.png',
+    about: '/images/hero/KB-transparent.png',
     projects: {
       vyapariAi: 'images/projects/vyapari-ai-placeholder.svg',
       internConnect: 'images/projects/intern-connect-placeholder.svg',

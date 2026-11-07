@@ -1,24 +1,23 @@
-import { useEffect } from 'react';
+import { useGSAP } from '@gsap/react';
 import SplitType from 'split-type';
 import { gsap, ScrollTrigger, EASINGS } from '../../../shared/animations/gsapConfig';
-import { prefersReducedMotion } from '../../../shared/animations/animationUtils';
 
 export function useHomeMotion(root: HTMLElement | null) {
-  useEffect(() => {
-    if (!root || prefersReducedMotion()) return;
+  useGSAP(() => {
+    if (!root) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const motion = gsap.matchMedia(root);
-    const splits: SplitType[] = [];
 
     motion.add(
       {
         reduce: '(prefers-reduced-motion: reduce)',
-        mobile: '(max-width: 767px)',
-        desktop: '(min-width: 768px)',
+        mobile: '(max-width: 640px)',
+        desktop: '(min-width: 641px)',
       },
       ({ conditions }) => {
         if (conditions?.reduce) return;
+        const splits: SplitType[] = [];
         const mobile = Boolean(conditions?.mobile);
 
         // ====================================================================
@@ -155,13 +154,7 @@ export function useHomeMotion(root: HTMLElement | null) {
           }
         };
 
-        // Trigger on custom event from preloader or immediately if already visited
-        const isVisited = sessionStorage.getItem('kernbuild_visited');
-        if (isVisited) {
-          playHeroAnimation();
-        } else {
-          window.addEventListener('kernbuild:hero-enter', playHeroAnimation, { once: true });
-        }
+        playHeroAnimation();
 
         // Floating badge subtle idle hovering animation
         if (badges.length) {
@@ -264,7 +257,7 @@ export function useHomeMotion(root: HTMLElement | null) {
         // PROJECTS SECTION: Image mask reveal & cards
         // ====================================================================
         revealGroup('.section#projects', '.section-heading');
-        const projectCards = root.querySelectorAll('.projects-grid .project-card');
+        const projectCards = root.querySelectorAll('.project-carousel__slide .project-card');
         if (projectCards.length) {
           projectCards.forEach((card, index) => {
             gsap.fromTo(
@@ -351,7 +344,7 @@ export function useHomeMotion(root: HTMLElement | null) {
           y: 26,
           stagger: 0.08,
         });
-        revealGroup('.feedback-section', '.section-heading, .form-card', {
+        revealGroup('.section#feedback', '.section-heading, .form-card', {
           y: 26,
         });
 
@@ -372,12 +365,11 @@ export function useHomeMotion(root: HTMLElement | null) {
           duration: 0.9,
           stagger: 0,
         });
+
+        return () => splits.forEach(split => split.revert());
       },
     );
 
-    return () => {
-      splits.forEach(s => s.revert());
-      motion.revert();
-    };
-  }, [root]);
+    return () => motion.revert();
+  }, { scope: root ?? undefined, dependencies: [root], revertOnUpdate: true });
 }

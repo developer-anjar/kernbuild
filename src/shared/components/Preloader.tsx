@@ -5,9 +5,23 @@ interface PreloaderProps {
 }
 
 const LOADING_VIDEO = '/loading%20video/loading.mp4';
+const MAX_INTRO_DURATION = 1600;
+
+function hasVisitedSession(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.sessionStorage.getItem('kernbuild_visited') === 'true';
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'SecurityError') {
+      console.warn('Session storage is unavailable; the KernBuild intro may play again.', error);
+      return false;
+    }
+    throw error;
+  }
+}
 
 export function Preloader({ onComplete }: PreloaderProps) {
-  const [shouldRender, setShouldRender] = useState(true);
+  const [shouldRender, setShouldRender] = useState(() => !hasVisitedSession());
   const [leaving, setLeaving] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -22,46 +36,44 @@ export function Preloader({ onComplete }: PreloaderProps) {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  const finishLoading = useCallback(() => {
+  const finishLoading = useCallback((immediate = false) => {
     if (completedRef.current) return;
     completedRef.current = true;
     if (timerRef.current !== null) window.clearTimeout(timerRef.current);
     videoRef.current?.pause();
-    window.sessionStorage.setItem('kernbuild_visited', 'true');
-    window.dispatchEvent(new CustomEvent('kernbuild:hero-enter'));
+    try {
+      window.sessionStorage.setItem('kernbuild_visited', 'true');
+    } catch (error) {
+      if (!(error instanceof DOMException) || error.name !== 'SecurityError') throw error;
+      console.warn('Session storage is unavailable; the KernBuild intro may play again.', error);
+    }
     onCompleteRef.current?.();
+    if (immediate) {
+      setShouldRender(false);
+      return;
+    }
     setLeaving(true);
     timerRef.current = window.setTimeout(() => setShouldRender(false), 450);
   }, []);
 
   useEffect(() => {
+    if (!shouldRender) return;
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const startFallback = (delay: number) => {
-      if (timerRef.current !== null) window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(finishLoading, delay);
-    };
     const startVideo = () => {
       const video = videoRef.current;
       if (!video || completedRef.current) return;
-      void video.play().catch(() => startFallback(1800));
+      void video.play().catch(() => finishLoading(true));
     };
     const onMotionChange = (event: MediaQueryListEvent) => {
       setReducedMotion(event.matches);
-      if (event.matches) {
-        videoRef.current?.pause();
-        startFallback(900);
-      } else {
-        if (timerRef.current !== null) window.clearTimeout(timerRef.current);
-        timerRef.current = window.setTimeout(finishLoading, 12000);
-        startVideo();
-      }
+      if (event.matches) finishLoading(true);
     };
 
     motionPreference.addEventListener('change', onMotionChange);
     if (motionPreference.matches) {
-      timerRef.current = window.setTimeout(finishLoading, 900);
+      finishLoading(true);
     } else {
-      timerRef.current = window.setTimeout(finishLoading, 12000);
+      timerRef.current = window.setTimeout(finishLoading, MAX_INTRO_DURATION);
       startVideo();
     }
 
@@ -70,7 +82,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       if (timerRef.current !== null) window.clearTimeout(timerRef.current);
       videoRef.current?.pause();
     };
-  }, [finishLoading]);
+  }, [finishLoading, shouldRender]);
 
   const updateProgress = () => {
     const video = videoRef.current;
@@ -116,10 +128,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
               autoPlay
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
               aria-hidden="true"
               onTimeUpdate={updateProgress}
-              onEnded={finishLoading}
+              onEnded={() => finishLoading()}
               onError={() => finishLoading()}
             />
           )}
@@ -131,7 +143,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         </div>
       </div>
 
-      <button className="loading-screen__skip" type="button" onClick={finishLoading}>
+      <button className="loading-screen__skip" type="button" onClick={() => finishLoading()}>
         Skip intro <span aria-hidden="true">→</span>
       </button>
     </div>

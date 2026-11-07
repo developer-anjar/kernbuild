@@ -20,10 +20,35 @@ const NAV_LINKS = [
 export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const navigationRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [scrolled, setScrolled] = useState(window.scrollY > 20);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const isHomeRoute = location.pathname === '/';
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setMobileMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (navigationRef.current?.contains(target) || menuButtonRef.current?.contains(target)) return;
+      setMobileMenuOpen(false);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -92,7 +117,7 @@ export function Navbar() {
           </span>
         </a>
 
-        <nav id="primary-navigation" className={`navbar__nav${mobileMenuOpen ? ' open' : ''}`} aria-label="Main navigation">
+        <nav ref={navigationRef} id="primary-navigation" className={`navbar__nav${mobileMenuOpen ? ' open' : ''}`} aria-label="Main navigation">
           {NAV_LINKS.map(link => (
             <a
               key={link.fragment}
@@ -109,6 +134,7 @@ export function Navbar() {
           <a className="navbar__cta navbar__cta--desktop" href="/#contact" onClick={event => { event.preventDefault(); goTo('contact'); }}>Let's Build <span aria-hidden="true">→</span></a>
         </MagneticButton>
         <button
+          ref={menuButtonRef}
           className="navbar__hamburger"
           type="button"
           onClick={() => setMobileMenuOpen(value => !value)}
@@ -129,7 +155,17 @@ export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const businessEmail = environment.businessEmail.trim();
   const navLinks = NAV_LINKS;
-  const serviceLinks = ['Web Applications', 'Full-Stack Development', 'AI Integration', 'Dashboards', 'Deployment'];
+  const serviceLinks = [
+    'Web Applications',
+    'Full-Stack Development',
+    'AI Integration',
+    'Dashboards',
+    'Deployment',
+    'Product Design & UX',
+    'E-commerce Solutions',
+    'API & Platform Integrations',
+    'Maintenance & Optimization',
+  ];
   const socialLinks = [
     { name: 'LinkedIn', icon: 'in', url: SITE_CONFIG.socialLinks.linkedin },
     { name: 'GitHub', icon: 'gh', url: SITE_CONFIG.socialLinks.github },

@@ -1,9 +1,10 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
 // Register core plugins once
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
 export const EASINGS = {
@@ -27,11 +28,10 @@ export const DURATION = {
 } as const;
 
 export const BREAKPOINTS = {
-  mobile: '(max-width: 767px)',
-  tablet: '(min-width: 768px) and (max-width: 1023px)',
+  mobile: '(max-width: 640px)',
+  tablet: '(min-width: 641px) and (max-width: 1023px)',
   desktop: '(min-width: 1024px)',
   reducedMotion: '(prefers-reduced-motion: reduce)',
 } as const;
 
 export { gsap, ScrollTrigger };
-
