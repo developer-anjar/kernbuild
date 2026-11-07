@@ -1,0 +1,8 @@
+.statistics-section { padding-top: 4rem; padding-bottom: 4rem; }
+.statistics-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.statistic-card { padding: 1.25rem; border: 1px solid #ffffff20; border-radius: 1rem; background: #ffffff09; text-align: center; backdrop-filter: blur(8px); }
+.statistic-value { display: block; color: #ff9a68; font-size: 2rem; font-weight: 800; line-height: 1.2; }
+.statistic-card h3 { margin: .5rem 0 .2rem; font-size: .95rem; }
+.statistic-card h3 { color: #f7f7fa; }
+.statistic-card p { margin: 0; color: #a4a8b7; font-size: .75rem; }
+@media (max-width: 640px) { .statistics-grid { grid-template-columns: 1fr; } }
