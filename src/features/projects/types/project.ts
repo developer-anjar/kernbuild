@@ -4,6 +4,7 @@ export type ProjectCategory =
   | 'Web Application'
   | 'Portfolio Website'
   | 'Web Applications'
+  | 'E-commerce'
   | 'Management Systems'
   | 'AI Applications'
   | 'Portfolio'
@@ -50,6 +51,7 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
   'Web Application',
   'Portfolio Website',
   'Web Applications',
+  'E-commerce',
   'Management Systems',
   'AI Applications',
   'Portfolio',
