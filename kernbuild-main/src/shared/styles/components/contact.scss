@@ -1,7 +1,0 @@
-.contact-grid { display: grid; grid-template-columns: .7fr 1.3fr; align-items: start; gap: 3rem; }
-.contact-copy h2 { margin: 0 0 1rem; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.12; letter-spacing: -.05em; }
-.contact-copy > p:not(.eyebrow) { color: var(--color-secondary-text); }
-.contact-note { display: flex; align-items: center; gap: .8rem; margin-top: 2rem; padding: 1rem; border-radius: .8rem; background: #fff; color: var(--color-secondary-text); }
-.contact-note span { color: var(--color-primary); }
-.contact-note p { margin: 0; font-size: .9rem; }
-@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 1rem; } }
