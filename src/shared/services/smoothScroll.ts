@@ -6,6 +6,14 @@ export function setActiveLenis(lenis: Lenis | null) {
   activeLenis = lenis;
 }
 
+export function pauseLenis() {
+  activeLenis?.stop();
+}
+
+export function resumeLenis() {
+  activeLenis?.start();
+}
+
 export function scrollToSection(id: string) {
   const target = document.getElementById(id);
   if (!target) return;

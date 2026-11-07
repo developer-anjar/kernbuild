@@ -1,14 +1,28 @@
 export type ProjectCategory =
+  | 'Full-Stack Web Application'
+  | 'AI-Powered Business Application'
+  | 'Web Application'
+  | 'Portfolio Website'
   | 'Web Applications'
-  | 'E-commerce'
   | 'Management Systems'
   | 'AI Applications'
   | 'Portfolio'
-  | 'SaaS'
-  | 'Landing Pages'
-  | 'Dashboards';
+  | 'SaaS';
 
 export type ProjectStatus = 'Completed' | 'In Progress' | 'Concept';
+
+export interface ProjectCaseStudy {
+  overview: string;
+  problemStatement: string;
+  solution: string;
+  keyFeatures: string[];
+  techStack: string[];
+  challenges: string[];
+  screenshots: {
+    url: string;
+    caption: string;
+  }[];
+}
 
 export interface Project {
   id: string;
@@ -27,15 +41,17 @@ export interface Project {
   status: ProjectStatus;
   featured: boolean;
   dummy: boolean;
+  caseStudy?: ProjectCaseStudy;
 }
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
+  'Full-Stack Web Application',
+  'AI-Powered Business Application',
+  'Web Application',
+  'Portfolio Website',
   'Web Applications',
-  'E-commerce',
   'Management Systems',
   'AI Applications',
   'Portfolio',
   'SaaS',
-  'Landing Pages',
-  'Dashboards',
 ];
