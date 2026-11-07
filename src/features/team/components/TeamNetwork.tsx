@@ -119,6 +119,7 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
     let height = 0;
     let pixelRatio = 1;
     let lastTime = 0;
+    let previousFrameTime = 0;
     let yaw = 0;
     let pitch = -0.08;
     let automaticYawOffset = 0;
@@ -213,6 +214,8 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
     };
 
     const renderFrame = (time: number) => {
+      const frameDelta = previousFrameTime ? Math.min(time - previousFrameTime, 50) : 16.67;
+      previousFrameTime = time;
       lastTime = time;
       const bounds = root.getBoundingClientRect();
       const nextWidth = bounds.width;
@@ -224,7 +227,7 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
       const automaticYaw = reducedMotionRef.current ? 0 : time * 0.000009;
       const targetYaw = isDragging ? dragYaw : automaticYawOffset + automaticYaw + mouseX * POINTER_YAW_RANGE;
       const targetPitch = isDragging ? dragPitch : -0.08 + mouseY * 0.2;
-      const easing = isDragging ? 0.24 : 0.075;
+      const easing = 1 - Math.exp(-frameDelta / (isDragging ? 55 : 180));
       yaw += (targetYaw - yaw) * easing;
       pitch += (targetPitch - pitch) * easing;
 

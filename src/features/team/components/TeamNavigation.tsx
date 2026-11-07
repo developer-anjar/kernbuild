@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import type { TeamMember } from '../types/team';
 
 interface TeamNavigationProps {
@@ -14,6 +15,7 @@ export function TeamNavigation({ members, selectedMemberId, onSelect }: TeamNavi
           className={member.id === selectedMemberId ? 'team-navigation__button is-active' : 'team-navigation__button'}
           key={member.id}
           type="button"
+          style={{ '--team-accent': member.accentColor } as CSSProperties}
           aria-pressed={member.id === selectedMemberId}
           onClick={() => onSelect(member.id)}
         >
