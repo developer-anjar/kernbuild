@@ -49,7 +49,7 @@ export const TEAM_DATA: TeamMember[] = [
     designation: 'Co-Founder & CDO',
     title: 'Chief Design Officer',
     accentColor: '#E5488A',
-    profileImage: '/images/team/placeholder-avatar.svg',
+    profileImage: '/images/team/aryan.jpg',
     skills: [
       'UI/UX Design',
       'Graphic Design',
@@ -63,7 +63,7 @@ export const TEAM_DATA: TeamMember[] = [
   },
   {
     id: 'team-004',
-    name: 'Aakanksha Ingoe',
+    name: 'Aakanksha Ingole',
     designation: 'Co-Founder & CMO',
     title: 'Chief Marketing Officer',
     accentColor: '#FF8A00',

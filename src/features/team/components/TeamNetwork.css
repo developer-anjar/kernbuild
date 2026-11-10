@@ -1,8 +1,8 @@
 .team-network {
   position: relative;
   width: 100%;
-  aspect-ratio: 620 / 560;
-  overflow: hidden;
+  aspect-ratio: 620 / 620;
+  overflow: visible;
   cursor: grab;
   touch-action: pan-y;
   user-select: none;
@@ -46,6 +46,7 @@
   height: 94px;
   border: 1px solid color-mix(in srgb, var(--team-accent) 48%, transparent);
   border-radius: 50%;
+  background: transparent;
   content: '';
   opacity: 0;
   transform: translate(-50%, -50%) scale(.92);
@@ -76,19 +77,20 @@
   height: 68px;
   overflow: hidden;
   place-items: center;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   background: linear-gradient(145deg, var(--team-accent), #8B35E8);
   box-shadow: 0 7px 20px rgba(16, 20, 38, .14), 0 0 0 2px color-mix(in srgb, var(--team-accent) 48%, transparent);
   color: #fff;
   font-size: 1rem;
   font-weight: 800;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--team-accent) 55%, transparent));
   transform: translate(-50%, -50%);
   transition: box-shadow .25s ease;
 }
 
 .team-network__node-overlay.is-active .team-network__portrait {
-  box-shadow: 0 8px 24px rgba(16, 20, 38, .16), 0 0 0 3px color-mix(in srgb, var(--team-accent) 58%, transparent);
+  box-shadow: 0 8px 24px rgba(16, 20, 38, .16), 0 0 0 3px var(--team-accent);
 }
 
 .team-network__portrait img {
@@ -131,7 +133,7 @@
 .team-network__hint {
   position: absolute;
   right: 0;
-  bottom: .1rem;
+  bottom: -1.5rem;
   left: 0;
   margin: 0;
   color: var(--color-muted);

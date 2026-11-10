@@ -30,7 +30,7 @@
   position: relative;
   min-height: 100vh;
   isolation: isolate;
-  background: var(--color-bg-main);
+  background: transparent;
 }
 
 .cinematic-app > main,
@@ -159,7 +159,7 @@
 
 body {
   color: var(--color-body);
-  background: var(--color-bg-main);
+  background: var(--kb-site-background) center / cover fixed, var(--color-bg-main);
 }
 
 .hero {
@@ -168,7 +168,8 @@ body {
   background:
     radial-gradient(ellipse at 82% 28%, rgba(104, 31, 234, .06), transparent 34%),
     radial-gradient(ellipse at 54% 92%, rgba(255, 90, 31, .06), transparent 32%),
-    linear-gradient(180deg, #fff 0%, #fff 62%, #fbfcff 100%);
+    linear-gradient(rgba(255, 255, 255, .64), rgba(255, 255, 255, .64)),
+    var(--kb-site-background) center / cover fixed;
 }
 
 .hero::before {
@@ -343,18 +344,33 @@ body {
 
 #main-content .section {
   padding-block: clamp(4rem, 6vw, 5.75rem);
-  background: var(--color-bg-main);
+  background-color: transparent;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .58), rgba(255, 255, 255, .58)),
+    var(--kb-site-background);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
   color: var(--color-heading);
 }
 #main-content .section.section--muted,
-#main-content .section.section--blue { background: var(--color-bg-secondary); }
+#main-content .section.section--blue {
+  background-image:
+    linear-gradient(rgba(248, 250, 252, .64), rgba(248, 250, 252, .64)),
+    var(--kb-site-background);
+}
 #main-content .section.section--lavender,
-#main-content .section.section--cinematic { background: var(--color-bg-section); }
+#main-content .section.section--cinematic {
+  background-image:
+    linear-gradient(rgba(243, 246, 252, .64), rgba(243, 246, 252, .64)),
+    var(--kb-site-background);
+}
 #main-content .section.section--cinematic {
   background:
     radial-gradient(ellipse at 96% 8%, rgba(104, 31, 234, .055), transparent 30%),
     radial-gradient(ellipse at 0% 100%, rgba(255, 90, 31, .045), transparent 34%),
-    var(--color-bg-section);
+    linear-gradient(rgba(243, 246, 252, .6), rgba(243, 246, 252, .6)),
+    var(--kb-site-background) center / cover fixed;
 }
 #main-content .section.section--cinematic::before { opacity: .45; }
 .section-heading { max-width: 760px; margin-bottom: 2.4rem; }
@@ -501,7 +517,15 @@ body {
     gap: 1.5rem;
     padding-top: 7rem;
   }
-  .hero-copy { max-width: 720px; padding: 1.5rem 0 0; }
+  .hero-copy {
+    max-width: 720px;
+    align-items: center;
+    justify-self: center;
+    padding: 1.5rem 0 0;
+    text-align: center;
+  }
+  .hero-copy .hero-description { text-align: center; }
+  .hero-copy .hero-actions { justify-content: center; }
   .hero-visual { width: min(100%, 680px); margin: 0 auto 1.5rem; }
 }
 

@@ -19,8 +19,8 @@ export function TeamNavigation({ members, selectedMemberId, onSelect }: TeamNavi
           aria-pressed={member.id === selectedMemberId}
           onClick={() => onSelect(member.id)}
         >
-          <span className="team-navigation__index">0{index + 1}</span>
-          <span className="team-navigation__name">{member.name}</span>
+          <span className="team-navigation__index">{String(index + 1).padStart(2, '0')}</span>
+          <span className="team-navigation__name">{member.name.split(/\s+/)[0]}</span>
           <span className="team-navigation__dot" style={{ backgroundColor: member.accentColor }} aria-hidden="true" />
         </button>
       ))}

@@ -3,6 +3,7 @@
   color-scheme: light;
 
   --kb-bg: #ffffff;
+  --kb-site-background: url('/images/site-background.jpg');
   --kb-surface-muted: #f8fafc;
   --kb-surface-soft: #f3f6fc;
   --kb-surface-card: #ffffff;
@@ -38,8 +39,8 @@
   --kb-space-16: 4rem;
   --kb-space-20: 5rem;
   --kb-space-24: 6rem;
-  --kb-gutter: clamp(1.25rem, 4vw, 3rem);
-  --kb-container-max: 75rem;
+  --kb-gutter: clamp(1.25rem, 3vw, 2.5rem);
+  --kb-container-max: 88rem;
   --kb-section-space: clamp(4rem, 8vw, 7rem);
 
   --kb-radius-sm: 0.375rem;

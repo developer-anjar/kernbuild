@@ -23,15 +23,8 @@ interface ProjectedPoint {
 }
 
 const NETWORK_WIDTH = 620;
-const NETWORK_HEIGHT = 560;
+const NETWORK_HEIGHT = 620;
 const CAMERA_DISTANCE = 760;
-const POINTER_YAW_RANGE = 0.42;
-const TEAM_POSITIONS: Point3D[] = [
-  { x: -28, y: -170, z: 96 },
-  { x: 166, y: -12, z: -82 },
-  { x: 22, y: 166, z: 78 },
-  { x: -166, y: 18, z: -74 },
-];
 
 const PARTICLES: Point3D[] = [
   { x: -98, y: -204, z: -80 },
@@ -48,14 +41,41 @@ const PARTICLES: Point3D[] = [
   { x: -82, y: 92, z: 66 },
 ];
 
-const EDGES = [
-  { from: 0, to: 1 },
-  { from: 0, to: 2 },
-  { from: 0, to: 3 },
-  { from: 1, to: 2 },
-  { from: 1, to: 3 },
-  { from: 2, to: 3 },
-];
+function createTeamPositions(count: number): Point3D[] {
+  if (count === 1) return [{ x: 0, y: 0, z: 0 }];
+
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  return Array.from({ length: count }, (_, index) => {
+    const vertical = 1 - 2 * (index + 0.5) / count;
+    const radius = Math.sqrt(1 - vertical * vertical);
+    const angle = index * goldenAngle;
+
+    return {
+      x: Math.cos(angle) * radius * 208,
+      y: vertical * 176,
+      z: Math.sin(angle) * radius * 120,
+    };
+  });
+}
+
+function createNetworkEdges(count: number) {
+  if (count < 2) return [];
+
+  const edges = new Map<string, { from: number; to: number }>();
+  const addEdge = (from: number, to: number) => {
+    if (from === to) return;
+    const start = Math.min(from, to);
+    const end = Math.max(from, to);
+    edges.set(`${start}:${end}`, { from: start, to: end });
+  };
+
+  for (let index = 0; index < count; index += 1) {
+    addEdge(index, (index + 1) % count);
+    if (count > 3) addEdge(index, (index + Math.floor(count / 2)) % count);
+  }
+
+  return [...edges.values()];
+}
 
 function project(point: Point3D, yaw: number, pitch: number, scale: number): ProjectedPoint {
   const cosYaw = Math.cos(yaw);
@@ -118,19 +138,19 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
     let width = 0;
     let height = 0;
     let pixelRatio = 1;
-    let lastTime = 0;
     let previousFrameTime = 0;
     let yaw = 0;
     let pitch = -0.08;
-    let automaticYawOffset = 0;
-    let mouseX = 0;
-    let mouseY = 0;
+    let targetYaw = yaw;
+    let targetPitch = pitch;
+    let previousSelectedIndex = -1;
     let dragYaw = 0;
     let dragPitch = 0;
     let dragStartX = 0;
     let dragStartY = 0;
-    let pointerOnNode = false;
     const previousNodePositions: Array<{ x: number; y: number; z: number } | undefined> = [];
+    const teamPositions = createTeamPositions(members.length);
+    const edges = createNetworkEdges(members.length);
 
     const resize = () => {
       const bounds = root.getBoundingClientRect();
@@ -144,12 +164,6 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     };
 
-    const updatePointer = (event: PointerEvent) => {
-      const bounds = root.getBoundingClientRect();
-      mouseX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-      mouseY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
-    };
-
     const onPointerMove = (event: PointerEvent) => {
       if (root.hasPointerCapture(event.pointerId)) {
         event.preventDefault();
@@ -159,16 +173,6 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
         dragPitch = Math.max(-0.75, Math.min(0.75, dragPitch + dy * 0.004));
         dragStartX = event.clientX;
         dragStartY = event.clientY;
-      } else if ((event.target as Element).closest('.team-network__node-overlay')) {
-        if (!pointerOnNode) {
-          pointerOnNode = true;
-          mouseX = (yaw - automaticYawOffset - (reducedMotionRef.current ? 0 : lastTime * 0.000009))
-            / POINTER_YAW_RANGE;
-          mouseY = (pitch + 0.08) / 0.2;
-        }
-      } else {
-        pointerOnNode = false;
-        updatePointer(event);
       }
     };
 
@@ -183,20 +187,10 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
     const onPointerUp = (event: PointerEvent) => {
       if (root.dataset.dragging !== 'true') return;
       if (root.hasPointerCapture(event.pointerId)) root.releasePointerCapture(event.pointerId);
-      automaticYawOffset = yaw - (reducedMotionRef.current ? 0 : lastTime * 0.000009);
+      yaw = dragYaw;
+      pitch = dragPitch;
       root.dataset.dragging = 'false';
       root.style.touchAction = 'pan-y';
-      mouseX = 0;
-      mouseY = 0;
-      pointerOnNode = false;
-    };
-
-    const onPointerLeave = (event: PointerEvent) => {
-      if (!root.hasPointerCapture(event.pointerId)) {
-        mouseX = 0;
-        mouseY = 0;
-        pointerOnNode = false;
-      }
     };
 
     const onTouchMove = (event: TouchEvent) => {
@@ -205,18 +199,15 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
 
     const onLostPointerCapture = () => {
       if (root.dataset.dragging !== 'true') return;
-      automaticYawOffset = yaw - (reducedMotionRef.current ? 0 : lastTime * 0.000009);
+      yaw = dragYaw;
+      pitch = dragPitch;
       root.dataset.dragging = 'false';
       root.style.touchAction = 'pan-y';
-      mouseX = 0;
-      mouseY = 0;
-      pointerOnNode = false;
     };
 
     const renderFrame = (time: number) => {
       const frameDelta = previousFrameTime ? Math.min(time - previousFrameTime, 50) : 16.67;
       previousFrameTime = time;
-      lastTime = time;
       const bounds = root.getBoundingClientRect();
       const nextWidth = bounds.width;
       const nextHeight = bounds.height;
@@ -224,18 +215,40 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
 
       const unitScale = Math.min(width / NETWORK_WIDTH, height / NETWORK_HEIGHT);
       const isDragging = root.dataset.dragging === 'true';
-      const automaticYaw = reducedMotionRef.current ? 0 : time * 0.000009;
-      const targetYaw = isDragging ? dragYaw : automaticYawOffset + automaticYaw + mouseX * POINTER_YAW_RANGE;
-      const targetPitch = isDragging ? dragPitch : -0.08 + mouseY * 0.2;
-      const easing = 1 - Math.exp(-frameDelta / (isDragging ? 55 : 180));
-      yaw += (targetYaw - yaw) * easing;
-      pitch += (targetPitch - pitch) * easing;
-
-      const projectedMembers = TEAM_POSITIONS.map(point => project(point, yaw, pitch, unitScale));
-      const projectedParticles = PARTICLES.map(point => project(point, yaw, pitch, unitScale));
       const selectedIndex = members.findIndex(member => member.id === selectedMemberIdRef.current);
+      if (selectedIndex !== previousSelectedIndex) {
+        previousSelectedIndex = selectedIndex;
+        const selectedPosition = teamPositions[selectedIndex];
+        if (selectedPosition) {
+          const frontFacingYaw = Math.atan2(-selectedPosition.x, selectedPosition.z);
+          const yawDifference = Math.atan2(Math.sin(frontFacingYaw - yaw), Math.cos(frontFacingYaw - yaw));
+          targetYaw = yaw + yawDifference;
+          targetPitch = Math.atan2(selectedPosition.y, Math.hypot(selectedPosition.x, selectedPosition.z));
+        }
+      }
+      const desiredYaw = isDragging ? dragYaw : targetYaw;
+      const desiredPitch = isDragging ? dragPitch : targetPitch;
+      const easing = 1 - Math.exp(-frameDelta / (isDragging ? 55 : 180));
+      const yawDifference = Math.atan2(Math.sin(desiredYaw - yaw), Math.cos(desiredYaw - yaw));
+      yaw += yawDifference * easing;
+      pitch += (desiredPitch - pitch) * easing;
+      if (!isDragging && Math.abs(yawDifference) < 0.0001 && Math.abs(desiredPitch - pitch) < 0.0001) {
+        yaw = desiredYaw;
+        pitch = desiredPitch;
+      }
+
+      const projectedMembers = teamPositions.map(point => project(point, yaw, pitch, unitScale));
+      const projectedParticles = PARTICLES.map(point => project(point, yaw, pitch, unitScale));
+      const sortedMembers = projectedMembers
+        .map((point, index) => ({ point, index }))
+        .sort((left, right) => left.point.z - right.point.z);
       const originX = (width - NETWORK_WIDTH * unitScale) / 2;
       const originY = (height - NETWORK_HEIGHT * unitScale) / 2;
+
+      sortedMembers.forEach(({ point, index }) => {
+        const node = nodeRefs.current.get(index);
+        if (node) node.style.zIndex = `${Math.round(point.z + 1000)}`;
+      });
 
       nodeRefs.current.forEach((node, index) => {
         const point = projectedMembers[index];
@@ -248,7 +261,6 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
           previousNodePositions[index] = { x, y, z: point.z };
         }
         if (!previous || Math.abs(point.z - previous.z) >= 1) {
-          node.style.zIndex = `${Math.round(point.z + 1000)}`;
           const renderedPosition = previousNodePositions[index];
           previousNodePositions[index] = {
             x: renderedPosition?.x ?? x,
@@ -263,18 +275,29 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
       context.translate(originX, originY);
 
       context.save();
-      context.translate(NETWORK_WIDTH * unitScale / 2, NETWORK_HEIGHT * unitScale / 2);
+      context.translate(NETWORK_WIDTH * unitScale / 2, (NETWORK_HEIGHT - 35) * unitScale);
       context.scale(unitScale, unitScale);
-      context.rotate(yaw * 0.38);
       context.beginPath();
-      context.ellipse(0, 0, 234, 112, 0, 0, Math.PI * 2);
-      context.setLineDash([3, 8]);
-      context.lineWidth = 1;
-      context.strokeStyle = 'rgba(104, 31, 234, .12)';
+      context.ellipse(0, 0, 215, 34, 0, 0, Math.PI * 2);
+      context.setLineDash([4, 5]);
+      context.lineWidth = 1.8;
+      context.strokeStyle = 'rgba(28, 145, 164, .6)';
       context.stroke();
+      if (!reducedMotionRef.current) {
+        const scanAngle = time * 0.00045;
+        context.beginPath();
+        context.ellipse(0, 0, 215, 34, 0, scanAngle, scanAngle + 1.05);
+        context.setLineDash([]);
+        context.lineWidth = 3;
+        context.strokeStyle = 'rgba(28, 145, 164, .95)';
+        context.shadowColor = 'rgba(28, 145, 164, .72)';
+        context.shadowBlur = 16;
+        context.stroke();
+        context.shadowBlur = 0;
+      }
       context.restore();
 
-      EDGES.forEach((edge, index) => {
+      edges.forEach((edge, index) => {
         const start = projectedMembers[edge.from];
         const end = projectedMembers[edge.to];
         const fromMember = members[edge.from];
@@ -283,14 +306,14 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
 
         const isActive = selectedIndex === edge.from || selectedIndex === edge.to;
         const gradient = context.createLinearGradient(start.x, start.y, end.x, end.y);
-        gradient.addColorStop(0, isActive ? fromMember.accentColor : 'rgba(104, 31, 234, .24)');
-        gradient.addColorStop(1, isActive ? toMember.accentColor : 'rgba(255, 90, 31, .2)');
+        gradient.addColorStop(0, isActive ? fromMember.accentColor : 'rgba(35, 145, 164, .72)');
+        gradient.addColorStop(1, isActive ? toMember.accentColor : 'rgba(104, 31, 234, .58)');
         context.beginPath();
         context.moveTo(start.x, start.y);
         context.lineTo(end.x, end.y);
         context.strokeStyle = gradient;
-        context.lineWidth = isActive ? 2 : 1.25;
-        context.globalAlpha = isActive ? 0.88 : 0.46;
+        context.lineWidth = isActive ? 2 : 1.8;
+        context.globalAlpha = isActive ? 0.88 : 0.82;
         context.setLineDash([5, 7]);
         context.lineDashOffset = reducedMotionRef.current ? 0 : -time * 0.012;
         context.stroke();
@@ -302,7 +325,7 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
           const y = start.y + (end.y - start.y) * progress;
           context.beginPath();
           context.arc(x, y, isActive ? 3 : 2.2, 0, Math.PI * 2);
-          context.fillStyle = isActive ? '#FF5A1F' : '#8B35E8';
+          context.fillStyle = isActive ? fromMember.accentColor : '#38B8CA';
           context.shadowColor = context.fillStyle;
           context.shadowBlur = isActive ? 11 : 7;
           context.globalAlpha = 0.95;
@@ -314,7 +337,7 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
       projectedParticles.forEach((point, index) => {
         context.beginPath();
         context.arc(point.x, point.y, (index % 3 === 0 ? 2 : 1.4) * point.scale, 0, Math.PI * 2);
-        context.fillStyle = index % 2 === 0 ? '#8B35E8' : '#FF8A00';
+        context.fillStyle = index % 2 === 0 ? '#38B8CA' : '#8B35E8';
         context.globalAlpha = reducedMotionRef.current
           ? 0.4
           : 0.26 + (Math.sin(time * 0.0015 + index) + 1) * 0.18;
@@ -332,7 +355,6 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
     root.addEventListener('pointerdown', onPointerDown);
     root.addEventListener('pointerup', onPointerUp);
     root.addEventListener('pointercancel', onPointerUp);
-    root.addEventListener('pointerleave', onPointerLeave);
     root.addEventListener('lostpointercapture', onLostPointerCapture);
     root.addEventListener('touchmove', onTouchMove, { passive: false });
     resize();
@@ -345,7 +367,6 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
       root.removeEventListener('pointerdown', onPointerDown);
       root.removeEventListener('pointerup', onPointerUp);
       root.removeEventListener('pointercancel', onPointerUp);
-      root.removeEventListener('pointerleave', onPointerLeave);
       root.removeEventListener('lostpointercapture', onLostPointerCapture);
       root.removeEventListener('touchmove', onTouchMove);
       root.style.touchAction = '';
@@ -362,7 +383,7 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
       onPointerDown={startDrag}
     >
       <canvas ref={canvasRef} className="team-network__canvas" aria-hidden="true" />
-      {members.slice(0, TEAM_POSITIONS.length).map(member => {
+      {members.map(member => {
         const hasImage = member.profileImage !== '/images/team/placeholder-avatar.svg'
           && !unavailableProfiles.has(member.id);
         const selected = member.id === selectedMemberId;
@@ -399,7 +420,7 @@ export function TeamNetwork({ members, selectedMemberId, onSelect, reducedMotion
           </button>
         );
       })}
-      <p className="team-network__hint"><span aria-hidden="true">✦</span> Move or drag to rotate. Select a founder to explore their role</p>
+      <p className="team-network__hint">Select a founder to explore their role</p>
     </div>
   );
 }

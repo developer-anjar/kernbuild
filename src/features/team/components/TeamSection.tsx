@@ -24,7 +24,7 @@ export function TeamSection() {
         >
           <p className="eyebrow">The people behind KernBuild</p>
           <h2>Small team. Thoughtful work. Big ideas.</h2>
-          <p>Four founders bringing engineering, design, and strategy together to build meaningful digital products.</p>
+          <p>Meet the founders bringing engineering, design, and strategy together to build meaningful digital products.</p>
         </motion.header>
 
         {selectedMember && (
