@@ -9,12 +9,9 @@ export function HeroSection() {
         <div className="hero-copy">
           <p className="eyebrow">Digital Solutions & Creative Development Agency</p>
           <h1>
-            <span className="hero-wordmark" aria-label="KernBuild">
-              <span className="hero-wordmark__kern" aria-hidden="true">kern</span>
-              <span className="hero-wordmark__build" aria-hidden="true">build</span>
-            </span>
-            <span className="hero-tagline">Build from the Core</span>
+            <img className="hero-wordmark" src="/images/kernbuild-wordmark.svg" alt="KernBuild" />
           </h1>
+          <p className="hero-tagline">Build from the Core</p>
           <p className="hero-description">
             We turn ambitious ideas into thoughtfully engineered digital products, from modern websites and custom applications to intelligent business solutions.
           </p>

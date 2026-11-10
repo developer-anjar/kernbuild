@@ -35,17 +35,9 @@
   }
 
   &__logo-text {
-    font-weight: 800;
-    font-size: 1.125rem;
-    letter-spacing: -0.5px;
-  }
-
-  &__logo-kern {
-    color: var(--color-heading);
-  }
-
-  &__logo-build {
-    color: var(--color-primary-orange);
+    display: block;
+    width: 10rem;
+    height: auto;
   }
 
   &__tagline {

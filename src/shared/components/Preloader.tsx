@@ -4,8 +4,8 @@ interface PreloaderProps {
   onComplete?: () => void;
 }
 
-const LOADING_VIDEO = '/loading%20video/loading.mp4';
-const MAX_INTRO_DURATION = 1600;
+const LOADING_VIDEO = '/loading-video/loading.mp4';
+const MAX_INTRO_DURATION = 8000;
 
 function hasVisitedSession(): boolean {
   if (typeof window === 'undefined') return false;
@@ -63,6 +63,13 @@ export function Preloader({ onComplete }: PreloaderProps) {
       const video = videoRef.current;
       if (!video || completedRef.current) return;
       void video.play().catch(() => finishLoading(true));
+
+      const durationMs = Number.isFinite(video.duration) && video.duration > 0
+        ? Math.max(video.duration * 1000 + 150, MAX_INTRO_DURATION)
+        : MAX_INTRO_DURATION;
+
+      if (timerRef.current !== null) window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(finishLoading, durationMs);
     };
     const onMotionChange = (event: MediaQueryListEvent) => {
       setReducedMotion(event.matches);
@@ -73,7 +80,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
     if (motionPreference.matches) {
       finishLoading(true);
     } else {
-      timerRef.current = window.setTimeout(finishLoading, MAX_INTRO_DURATION);
       startVideo();
     }
 
@@ -110,7 +116,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
               <path d="M10 8l6 8-6 8M16 16h6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          <span className="loading-screen__wordmark"><b>kern</b><strong>build</strong></span>
+          <img className="loading-screen__wordmark" src="/images/kernbuild-wordmark.svg" alt="" />
         </div>
 
         <div className="loading-screen__media">

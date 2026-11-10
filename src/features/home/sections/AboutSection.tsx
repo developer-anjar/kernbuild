@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SITE_CONFIG } from '../../../shared/config/site';
 
 export function AboutSection() {
-  const [imageVisible, setImageVisible] = useState(true);
-
   return (
     <section className="section about-section" id="about">
       <div className="container about-grid">
         <div className="about-art">
-          {imageVisible && <img src={SITE_CONFIG.images.about} alt="KernBuild logo mark and wordmark" loading="lazy" onError={() => setImageVisible(false)} />}
+          <img src="/kernbuild-favicon.ico" alt="" width="96" height="96" />
+          <img className="about-art__wordmark" src="/images/kernbuild-wordmark.svg" alt="KernBuild" />
           <p className="about-art__tagline">Build from the Core</p>
         </div>
         <div className="about-copy">

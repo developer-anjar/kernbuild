@@ -19,13 +19,16 @@
     linear-gradient(145deg, #f8faff, #fff8f4);
   border: 1px solid var(--color-border);
 }
-.about-art img {
+.about-art > img:first-child {
   position: relative;
-  width: min(100%, 34rem);
-  height: auto;
-  max-height: 245px;
+  width: 6rem;
+  height: 6rem;
   object-fit: contain;
-  padding: 0;
+}
+.about-art__wordmark {
+  display: block;
+  width: min(100%, 22rem);
+  height: auto;
 }
 .about-art__tagline {
   margin: .25rem 0 0;
@@ -60,6 +63,7 @@
     padding: 1.5rem;
   }
   .about-art img {
-    max-height: 190px;
+    width: 5rem;
+    height: 5rem;
   }
 }

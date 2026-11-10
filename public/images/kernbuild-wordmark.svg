@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 78" role="img" aria-labelledby="title">
+  <title id="title">KernBuild</title>
+  <g fill="#241a5e" fill-rule="evenodd">
+    <path transform="translate(-4)" d="M4 0h12v28L43 0h17L34 34l26 44H43L24 48l-8 8v22H4z"/>
+    <path transform="translate(-4)" d="M72 0h56v14H86v17h34v14H86v19h42v14H72z"/>
+    <path transform="translate(-4)" d="M140 0h33c18 0 27 8 27 23 0 13-6 21-17 24l17 31h-17l-18-29h-11v29h-14zm14 14v21h18c9 0 13-3 13-11s-4-10-13-10z"/>
+    <path transform="translate(-4)" d="M208 0h14l28 45V0h14v78h-14l-28-45v45h-14z"/>
+    <path transform="translate(-4)" d="M276 0h32c18 0 27 7 27 21 0 9-4 15-12 18 9 3 14 10 14 21 0 12-9 18-27 18h-34zm14 14v19h17c9 0 13-3 13-10 0-6-4-9-13-9zm0 32v18h18c9 0 13-3 13-9s-4-9-13-9z"/>
+    <path transform="translate(-4)" d="M344 0h15v51c0 10 5 15 15 15s15-5 15-15V0h15v52c0 18-10 26-30 26s-30-8-30-26z"/>
+    <path transform="translate(-4)" d="M412 0h60v14h-23v50h23v14h-60V64h23V14h-23z"/>
+    <path transform="translate(36)" d="M440 0h15v64h42v14h-57z"/>
+    <path transform="translate(36)" d="M508 0h28c23 0 36 14 36 39s-13 39-36 39h-28zm15 14v50h12c14 0 22-8 22-25s-8-25-22-25z"/>
+  </g>
+</svg>
