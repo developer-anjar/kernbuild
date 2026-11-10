@@ -81,8 +81,10 @@
 
   .hero-wordmark {
     display: block;
-    width: min(100%, 38rem);
-    height: auto;
+    color: var(--color-heading, #101426);
+    font-size: clamp(2.25rem, 7.5vw, 5.5rem);
+    letter-spacing: 0;
+    white-space: nowrap;
   }
 
 }

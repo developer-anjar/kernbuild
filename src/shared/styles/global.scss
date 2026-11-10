@@ -1,5 +1,21 @@
 @use './variables' as *;
 
+@font-face {
+  font-family: 'Kernel Heavy';
+  src: url('/fonts/fonnts.com-kernelheavy.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+.kb-wordmark {
+  font-family: 'Kernel Heavy', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 /* ── Light Theme Global Styles ── */
 * { box-sizing: border-box; }
 

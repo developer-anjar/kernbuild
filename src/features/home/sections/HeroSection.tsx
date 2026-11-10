@@ -9,7 +9,7 @@ export function HeroSection() {
         <div className="hero-copy">
           <p className="eyebrow">Digital Solutions & Creative Development Agency</p>
           <h1>
-            <img className="hero-wordmark" src="/images/kernbuild-wordmark.svg" alt="KernBuild" />
+            <span className="hero-wordmark kb-wordmark">KERNBUILD</span>
           </h1>
           <p className="hero-tagline">Build from the Core</p>
           <p className="hero-description">

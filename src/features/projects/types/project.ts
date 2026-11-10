@@ -8,17 +8,20 @@ export type ProjectCategory =
   | 'Management Systems'
   | 'AI Applications'
   | 'Portfolio'
-  | 'SaaS';
+  | 'SaaS'
+  | 'AI-Powered Pet Rescue Platform'
+  | 'Environmental Web Application'
+  | 'Database Security / Cybersecurity';
 
-export type ProjectStatus = 'Completed' | 'In Progress' | 'Concept';
+export type ProjectStatus = 'Completed' | 'In Progress' | 'Concept' | 'Deployed';
 
 export interface ProjectCaseStudy {
   overview: string;
-  problemStatement: string;
-  solution: string;
+  problemStatement?: string;
+  solution?: string;
   keyFeatures: string[];
   techStack: string[];
-  challenges: string[];
+  challenges?: string[];
   screenshots: {
     url: string;
     caption: string;
@@ -36,10 +39,11 @@ export interface Project {
   gallery: string[];
   technologies: string[];
   features: string[];
+  role?: string;
   liveUrl?: string;
   githubUrl?: string;
-  completionDate: string;
-  status: ProjectStatus;
+  completionDate?: string;
+  status?: ProjectStatus;
   featured: boolean;
   dummy: boolean;
   caseStudy?: ProjectCaseStudy;
@@ -56,4 +60,7 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
   'AI Applications',
   'Portfolio',
   'SaaS',
+  'AI-Powered Pet Rescue Platform',
+  'Environmental Web Application',
+  'Database Security / Cybersecurity',
 ];

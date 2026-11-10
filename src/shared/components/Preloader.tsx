@@ -116,7 +116,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
               <path d="M10 8l6 8-6 8M16 16h6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          <img className="loading-screen__wordmark" src="/images/kernbuild-wordmark.svg" alt="" />
+          <span className="loading-screen__wordmark kb-wordmark" aria-hidden="true">KERNBUILD</span>
         </div>
 
         <div className="loading-screen__media">

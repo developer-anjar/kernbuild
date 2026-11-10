@@ -619,8 +619,8 @@ body {
 
 .loading-screen__wordmark {
   display: block;
-  width: 11rem;
-  height: auto;
+  color: var(--color-heading, #101426);
+  font-size: 1.6rem;
 }
 
 .loading-screen__media {

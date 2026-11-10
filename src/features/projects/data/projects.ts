@@ -17,9 +17,14 @@ export const PROJECTS_DATA: Project[] = [
       'A centralized internship management platform connecting students with hiring companies and simplifying tracking workflows.',
     fullDescription:
       'InternConnect is an internship management platform designed to connect students with companies offering internship opportunities. The platform provides a centralized environment where students can discover internships, apply for opportunities, and track their applications in real-time while giving companies tools to manage postings and applicants.',
-    thumbnail: '/images/projects/internConnect.png',
+    thumbnail: '/images/projects/internconnect/IC1.png',
     gallery: [
-      '/images/projects/internConnect.png',
+      '/images/projects/internconnect/IC1.png',
+      '/images/projects/internconnect/IC2.png',
+      '/images/projects/internconnect/IC3.png',
+      '/images/projects/internconnect/IC4.png',
+      '/images/projects/internconnect/IC5.png',
+      '/images/projects/internconnect/IC6.png',
     ],
     technologies: ['Angular', 'Java Spring Boot', 'MySQL', 'REST APIs', 'JWT Authentication'],
     features: [
@@ -65,8 +70,28 @@ export const PROJECTS_DATA: Project[] = [
       ],
       screenshots: [
         {
-          url: '/images/projects/internConnect.png',
-          caption: 'InternConnect application dashboard and internship management interface',
+          url: '/images/projects/internconnect/IC1.png',
+          caption: 'InternConnect internship discovery landing page',
+        },
+        {
+          url: '/images/projects/internconnect/IC2.png',
+          caption: 'InternConnect student profile and application dashboard',
+        },
+        {
+          url: '/images/projects/internconnect/IC3.png',
+          caption: 'Internship listings and recommendations',
+        },
+        {
+          url: '/images/projects/internconnect/IC4.png',
+          caption: 'Student internship application history',
+        },
+        {
+          url: '/images/projects/internconnect/IC5.png',
+          caption: 'Company internship application management',
+        },
+        {
+          url: '/images/projects/internconnect/IC6.png',
+          caption: 'Company review of internship applicants',
         },
       ],
     },
@@ -252,6 +277,191 @@ export const PROJECTS_DATA: Project[] = [
         {
           url: '/images/projects/portfolio.png',
           caption: 'Personal Developer Portfolio landing page and project showcase',
+        },
+      ],
+    },
+  },
+  {
+    id: 'petiora-ai',
+    slug: 'petiora-ai',
+    title: 'Petiora.ai',
+    category: 'AI-Powered Pet Rescue Platform',
+    shortDescription:
+      'An AI-powered animal welfare platform combining intelligent assistance, image analysis, pet adoption and donation services to make animal rescue and responsible pet ownership more accessible.',
+    fullDescription:
+      'Petiora.ai is an AI-powered animal welfare platform designed to make pet rescue, adoption and animal care more accessible through technology. It integrates intelligent assistance, image analysis, adoption services and donation features into a unified digital ecosystem. The platform connects people with animal welfare resources while encouraging responsible pet ownership and supporting rescue initiatives.',
+    thumbnail: '/images/projects/petiora/pet1.png',
+    gallery: [
+      '/images/projects/petiora/pet1.png',
+      '/images/projects/petiora/pet2.png',
+      '/images/projects/petiora/pet3.png',
+    ],
+    technologies: ['Angular 20', 'Java', 'Spring Boot', 'OpenAI API'],
+    features: [
+      'AI-powered rescue chatbot',
+      'Image analysis',
+      'Pet adoption module',
+      'Donation management',
+      'GreenPaws initiative',
+    ],
+    role: 'Technical Lead',
+    status: 'Deployed',
+    featured: true,
+    dummy: false,
+    caseStudy: {
+      overview:
+        'Petiora.ai is an AI-powered animal welfare platform designed to make pet rescue, adoption and animal care more accessible through technology. It integrates intelligent assistance, image analysis, adoption services and donation features into a unified digital ecosystem.',
+      problemStatement:
+        'Making pet rescue, adoption and animal care more accessible while supporting responsible pet ownership and rescue initiatives.',
+      solution:
+        'The platform connects people with animal welfare resources through intelligent assistance, image analysis, adoption services and donation features.',
+      keyFeatures: [
+        'AI-powered rescue chatbot',
+        'Image analysis',
+        'Pet adoption module',
+        'Donation management',
+        'GreenPaws initiative',
+      ],
+      techStack: ['Angular 20', 'Java', 'Spring Boot', 'OpenAI API'],
+      screenshots: [
+        {
+          url: '/images/projects/petiora/pet1.png',
+          caption: 'Petiora.ai animal welfare platform landing page',
+        },
+        {
+          url: '/images/projects/petiora/pet2.png',
+          caption: 'Animal-in-need reporting form and location map',
+        },
+        {
+          url: '/images/projects/petiora/pet3.png',
+          caption: 'Pet adoption listings',
+        },
+      ],
+    },
+  },
+  {
+    id: 'aquashield',
+    slug: 'aquashield',
+    title: 'AquaShield — Environmental Action Hub',
+    category: 'Environmental Web Application',
+    shortDescription:
+      'An interactive environmental awareness platform focused on water pollution, personalized action planning and community-driven environmental initiatives.',
+    fullDescription:
+      'AquaShield is an interactive environmental awareness and action platform focused on addressing water pollution. It provides users with educational resources, personalized action plans, incident reporting and interactive learning experiences. The platform transforms environmental awareness into meaningful individual and community action through accessible digital tools.',
+    thumbnail: '/images/projects/aquashield/aq1.png',
+    gallery: [
+      '/images/projects/aquashield/aq1.png',
+      '/images/projects/aquashield/aq2.png',
+      '/images/projects/aquashield/aq3.png',
+    ],
+    technologies: ['HTML', 'CSS', 'JavaScript', 'Supabase'],
+    features: [
+      'Personalized environmental dashboards',
+      'Custom action planner',
+      'Water pollution incident reporting',
+      'Educational guidance',
+      'Interactive quizzes',
+      'Supabase authentication',
+      'Cloud storage integration',
+    ],
+    status: 'Deployed',
+    featured: true,
+    dummy: false,
+    caseStudy: {
+      overview:
+        'AquaShield is an interactive environmental awareness and action platform focused on addressing water pollution. It provides users with educational resources, personalized action plans, incident reporting and interactive learning experiences.',
+      problemStatement:
+        'Turning environmental awareness about water pollution into meaningful individual and community action.',
+      solution:
+        'AquaShield brings personalized action planning, incident reporting, educational resources and interactive learning experiences together in accessible digital tools.',
+      keyFeatures: [
+        'Personalized environmental dashboards',
+        'Custom action planner',
+        'Water pollution incident reporting',
+        'Educational guidance',
+        'Interactive quizzes',
+        'Supabase authentication',
+        'Cloud storage integration',
+      ],
+      techStack: ['HTML', 'CSS', 'JavaScript', 'Supabase'],
+      screenshots: [
+        {
+          url: '/images/projects/aquashield/aq1.png',
+          caption: 'AquaShield environmental action dashboard',
+        },
+        {
+          url: '/images/projects/aquashield/aq2.png',
+          caption: 'Personalized environmental action planner',
+        },
+        {
+          url: '/images/projects/aquashield/aq3.png',
+          caption: 'Water pollution incident reporting workflow',
+        },
+      ],
+    },
+  },
+  {
+    id: 'recon-x',
+    slug: 'recon-x',
+    title: 'RECON-X',
+    category: 'Database Security / Cybersecurity',
+    shortDescription:
+      'A database security gateway designed to inspect SQL queries, assess security risks, enforce access policies and prevent unauthorized database access.',
+    fullDescription:
+      'RECON-X is a database security gateway designed to inspect SQL queries, assess security risks, enforce access policies and prevent unauthorized data access before queries reach a protected database. It provides a centralized security dashboard for query analysis, risk assessment, policy enforcement, audit logs and protected database execution.',
+    thumbnail: '/images/projects/recon-x/recon1.png',
+    gallery: [
+      '/images/projects/recon-x/recon1.png',
+      '/images/projects/recon-x/recon2.png',
+      '/images/projects/recon-x/recon3.png',
+    ],
+    technologies: [],
+    features: [
+      'Inspect SQL statements before execution using SQL parsing and security rules',
+      'Assess query risk and provide security decisions',
+      'Apply configured policies to allow, flag, restrict or block queries',
+      'Execute supported PostgreSQL queries through a restricted database account',
+      'Integrate with PostgreSQL and existing demo datasets',
+      'Display query activity, risk indicators, execution results and system status',
+      'Record security decisions and relevant query activity',
+      'Detect suspicious query patterns that may reveal protected information',
+      'Apply access restrictions according to configured user roles and permissions',
+      'Support privacy-oriented mechanisms such as differential privacy in applicable workflows',
+    ],
+    featured: true,
+    dummy: false,
+    caseStudy: {
+      overview:
+        'RECON-X is a database security gateway designed to inspect SQL queries, assess security risks, enforce access policies and prevent unauthorized data access before queries reach a protected database. It provides a centralized security dashboard for query analysis, risk assessment, policy enforcement, audit logs and protected database execution.',
+      problemStatement:
+        'SQL queries need to be inspected and checked against access policies before reaching a protected database.',
+      solution:
+        'RECON-X provides a gateway and centralized security dashboard for query analysis, risk assessment, policy enforcement, audit logs and protected database execution.',
+      keyFeatures: [
+        'SQL inspection using query parsing and security rules',
+        'Query risk assessment and security decisions',
+        'Configurable policies to allow, flag, restrict or block queries',
+        'Protected execution of supported PostgreSQL queries',
+        'PostgreSQL and demo dataset integration',
+        'Security dashboard for query activity and system status',
+        'Audit logging for security decisions and query activity',
+        'Detection of suspicious query patterns',
+        'Role-based access restrictions',
+        'Privacy-oriented controls, including differential privacy in supported workflows',
+      ],
+      techStack: [],
+      screenshots: [
+        {
+          url: '/images/projects/recon-x/recon1.png',
+          caption: 'RECON-X database security overview dashboard',
+        },
+        {
+          url: '/images/projects/recon-x/recon2.png',
+          caption: 'RECON-X SQL query analysis and risk assessment',
+        },
+        {
+          url: '/images/projects/recon-x/recon3.png',
+          caption: 'RECON-X security event and session activity dashboard',
         },
       ],
     },

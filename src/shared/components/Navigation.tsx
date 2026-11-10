@@ -112,7 +112,7 @@ export function Navbar() {
             <img src="/kernbuild-favicon.ico" alt="" width="32" height="32" />
           </span>
           <span className="navbar__brand">
-            <img className="navbar__brand-text" src="/images/kernbuild-wordmark.svg" alt="" />
+            <span className="navbar__brand-text kb-wordmark">KERNBUILD</span>
             <span className="navbar__brand-tagline">Build from the Core</span>
           </span>
         </a>
@@ -205,7 +205,7 @@ export function Footer() {
                   <path d="M10 8l6 8-6 8M16 16h6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              <img className="footer__logo-text" src="/images/kernbuild-wordmark.svg" alt="KernBuild" />
+              <span className="footer__logo-text kb-wordmark">KERNBUILD</span>
             </div>
             <p className="footer__tagline">Build from the Core</p>
             <p className="footer__desc">A full-stack development studio helping startups and businesses build modern, scalable digital products.</p>

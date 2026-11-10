@@ -36,8 +36,8 @@
 
   &__logo-text {
     display: block;
-    width: 10rem;
-    height: auto;
+    color: var(--color-heading);
+    font-size: 1.5rem;
   }
 
   &__tagline {

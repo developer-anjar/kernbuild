@@ -6,7 +6,7 @@ export function AboutSection() {
       <div className="container about-grid">
         <div className="about-art">
           <img src="/kernbuild-favicon.ico" alt="" width="96" height="96" />
-          <img className="about-art__wordmark" src="/images/kernbuild-wordmark.svg" alt="KernBuild" />
+          <span className="about-art__wordmark kb-wordmark">KERNBUILD</span>
           <p className="about-art__tagline">Build from the Core</p>
         </div>
         <div className="about-copy">
